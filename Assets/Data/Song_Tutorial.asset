@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65f782d24bbc454f94050287cac1a33, type: 3}
+  m_Name: Song_Tutorial
+  m_EditorClassIdentifier: Assembly-CSharp::SongData
+  songName: Tutorial
+  audioClip: {fileID: 8300000, guid: d7c14ec3b1a56874f9471bf48bb4889c, type: 3}
+  bpm: 110
+  firstBeatOffset: 0
