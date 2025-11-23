@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using DG.Tweening;
 
 /// <summary>
 /// Controlador de movimiento del jugador integrado con el sistema de combate.
@@ -9,7 +11,12 @@ public class PlayerGridController : MonoBehaviour
 {
     [Header("Grid Settings")]
     public Vector2Int gridPosition = Vector2Int.zero;
-    public float cellSize = 1f;
+    
+    [Header("Animation Settings")]
+    [SerializeField] private float moveDuration = 0.15f;
+    [SerializeField] private Ease moveEase = Ease.OutQuad;
+    [SerializeField] private float bumpDistance = 0.5f; // 50% hacia el enemigo
+    [SerializeField] private float bumpDuration = 0.1f;
     
     [Header("References")]
     public PlayerCombat combatComponent;
@@ -27,12 +34,27 @@ public class PlayerGridController : MonoBehaviour
         RhythmInput.OnMovementInput -= OnMovementRequested;
     }
 
+    void OnDestroy()
+    {
+        // Desregistrar del GridManager
+        if (GridManager.Instance != null)
+        {
+            GridManager.Instance.UnregisterEntity(gridPosition);
+        }
+    }
+
     void Start()
     {
         // Inicializar componente de combate si no está asignado
         if (combatComponent == null)
         {
             combatComponent = GetComponent<PlayerCombat>();
+        }
+        
+        // Registrar el jugador en el GridManager
+        if (GridManager.Instance != null)
+        {
+            GridManager.Instance.RegisterEntity(gridPosition, gameObject);
         }
         
         // Sincronizar posición visual con posición en grid
@@ -54,27 +76,34 @@ public class PlayerGridController : MonoBehaviour
 
     void TryMoveOrAttack(Vector2Int direction)
     {
-        Vector2Int targetPosition = gridPosition + direction;
-        Vector3 worldTargetPosition = GridToWorldPosition(targetPosition);
-
-        // Verificar si hay algo en la celda objetivo
-        Collider2D hit = Physics2D.OverlapCircle(worldTargetPosition, 0.3f);
-
-        if (hit != null)
+        if (GridManager.Instance == null)
         {
-            // Hay algo en la celda objetivo
-            IDamageable damageable = hit.GetComponent<IDamageable>();
-            
-            if (damageable != null && damageable.IsAlive)
+            Debug.LogError("GridManager no encontrado. Asegúrate de tener un GridManager en la escena.");
+            return;
+        }
+
+        Vector2Int targetPosition = gridPosition + direction;
+
+        // Verificar si la celda está ocupada por un enemigo
+        if (GridManager.Instance.IsCellOccupied(targetPosition))
+        {
+            GameObject targetEntity = GridManager.Instance.GetEntityAt(targetPosition);
+            if (targetEntity != null)
             {
-                // Es un enemigo u objeto dañable -> ATACAR
-                PerformAttack(worldTargetPosition, damageable);
-                return;
+                IDamageable damageable = targetEntity.GetComponent<IDamageable>();
+                
+                if (damageable != null && damageable.IsAlive)
+                {
+                    // Es un enemigo u objeto dañable -> ATACAR
+                    Vector3 worldTargetPosition = GridManager.Instance.GetTargetPosition(targetPosition);
+                    PerformAttack(worldTargetPosition, damageable);
+                    return;
+                }
             }
         }
 
-        // La celda está libre o no hay nada dañable -> MOVERSE
-        if (IsCellWalkable(targetPosition))
+        // La celda está libre -> MOVERSE
+        if (GridManager.Instance.IsCellWalkable(targetPosition))
         {
             PerformMove(targetPosition);
         }
@@ -86,14 +115,20 @@ public class PlayerGridController : MonoBehaviour
 
     void PerformMove(Vector2Int newGridPosition)
     {
+        // Actualizar registro en GridManager
+        if (GridManager.Instance != null)
+        {
+            GridManager.Instance.MoveEntity(gridPosition, newGridPosition, gameObject);
+        }
+
         gridPosition = newGridPosition;
-        Vector3 targetWorldPos = GridToWorldPosition(gridPosition);
+        Vector3 targetWorldPos = GridManager.Instance.GetTargetPosition(gridPosition);
         
-        // TODO: Añadir animación suave con DOTween
-        // transform.DOMove(targetWorldPos, duration).SetEase(Ease.OutQuad);
-        
-        // Por ahora, movimiento instantáneo
-        transform.position = targetWorldPos;
+        // Animación suave con DOTween
+        isMoving = true;
+        transform.DOMove(targetWorldPos, moveDuration)
+            .SetEase(moveEase)
+            .OnComplete(() => isMoving = false);
         
         Debug.Log($"<color=cyan>Player se movió a {gridPosition}</color>");
     }
@@ -102,42 +137,51 @@ public class PlayerGridController : MonoBehaviour
     {
         if (combatComponent == null) return;
 
+        // Ejecutar el ataque
         combatComponent.Attack(targetPosition, target);
         
-        // TODO: Bump attack animation
-        // 1. DOMove hacia el enemigo (50% de distancia)
-        // 2. Luego regresar a posición original
+        // Bump attack animation: moverse 50% hacia el enemigo y regresar
+        Vector3 originalPosition = transform.position;
+        Vector3 direction = (targetPosition - originalPosition).normalized;
+        Vector3 bumpPosition = originalPosition + (direction * bumpDistance);
+        
+        // Crear secuencia: ir hacia enemigo -> regresar a posición original
+        Sequence bumpSequence = DOTween.Sequence();
+        bumpSequence.Append(transform.DOMove(bumpPosition, bumpDuration / 2f).SetEase(Ease.OutQuad));
+        bumpSequence.Append(transform.DOMove(originalPosition, bumpDuration / 2f).SetEase(Ease.InQuad));
         
         Debug.Log($"<color=orange>Player atacó en {targetPosition}</color>");
     }
 
-    bool IsCellWalkable(Vector2Int cellPosition)
-    {
-        // TODO: Integrar con GridManager cuando esté implementado
-        // Por ahora, permitir movimiento dentro de un área simple
-        
-        // Límites básicos (ajustar según tu nivel)
-        if (cellPosition.x < -5 || cellPosition.x > 5) return false;
-        if (cellPosition.y < -5 || cellPosition.y > 5) return false;
-        
-        return true;
-    }
-
-    Vector3 GridToWorldPosition(Vector2Int gridPos)
-    {
-        return new Vector3(gridPos.x * cellSize, gridPos.y * cellSize, 0f);
-    }
-
     void SyncPositionToGrid()
     {
-        transform.position = GridToWorldPosition(gridPosition);
+        if (GridManager.Instance != null)
+        {
+            transform.position = GridManager.Instance.GetTargetPosition(gridPosition);
+        }
+        else
+        {
+            // Fallback si no hay GridManager
+            transform.position = new Vector3(gridPosition.x, gridPosition.y, 0f);
+        }
     }
 
     // Para debug
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Vector3 worldPos = GridToWorldPosition(gridPosition);
-        Gizmos.DrawWireCube(worldPos, Vector3.one * cellSize);
+        
+        if (GridManager.Instance != null)
+        {
+            Vector3 worldPos = GridManager.Instance.GetTargetPosition(gridPosition);
+            float cellSize = GridManager.Instance.GetCellSize();
+            Gizmos.DrawWireCube(worldPos, Vector3.one * cellSize);
+        }
+        else
+        {
+            // Fallback visual
+            Vector3 worldPos = new Vector3(gridPosition.x, gridPosition.y, 0f);
+            Gizmos.DrawWireCube(worldPos, Vector3.one);
+        }
     }
 }
