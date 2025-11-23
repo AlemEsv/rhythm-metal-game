@@ -11,6 +11,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CalibrationScene.unity
     guid: e58c8da658032b7479852ca93a215b71
+  - enabled: 1
+    path: Assets/Scenes/IntroScene.unity
+    guid: d736e5c0db075bf4fab94fc70c535cdb
+  - enabled: 1
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: 61abb3f40beb1be479138be9d022b25b
+  - enabled: 1
+    path: Assets/Scenes/CalibrationResultsScene.unity
+    guid: ca227af650ae35044b4691933eaf0f77
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
