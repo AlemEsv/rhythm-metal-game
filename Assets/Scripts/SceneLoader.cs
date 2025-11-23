@@ -1,15 +1,64 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections;
 
 public class SceneLoader : MonoBehaviour
 {
-    public void LoadScene(string sceneName)
+    public static SceneLoader Instance;
+
+    [Header("Configuración Visual")]
+    public CanvasGroup fadeCanvasGroup;
+    public float fadeDuration = 0.5f;   // fade entre escenas
+
+    private void Awake()
     {
-        SceneManager.LoadScene(sceneName);
+        // Configuración Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // No se destruye al cambiar de escena
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public void TestClick()
+    public void LoadScene(string sceneName)
     {
-        Debug.Log("¡CLICK DETECTADO!");
+        StartCoroutine(FadeAndLoad(sceneName));
+    }
+
+    private IEnumerator FadeAndLoad(string sceneName)
+    {
+        // Fade Out
+        yield return StartCoroutine(Fade(1f));
+
+        // Cargar la escena
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        
+        // Esperar a que la escena cargue
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        // Fade In
+        yield return StartCoroutine(Fade(0f));
+    }
+
+    private IEnumerator Fade(float targetAlpha)
+    {
+        float startAlpha = fadeCanvasGroup.alpha;
+        float time = 0;
+
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+            fadeCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / fadeDuration);
+            yield return null;
+        }
+        fadeCanvasGroup.alpha = targetAlpha;
     }
 }

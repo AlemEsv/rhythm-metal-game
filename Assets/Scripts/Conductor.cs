@@ -62,13 +62,10 @@ public class Conductor : MonoBehaviour
     void Update()
     {
         if (!musicSource.isPlaying) return;
-
-        // --- CÁLCULO DE TIEMPO (DSP) ---
         
-        // 1. Calculamos dónde estamos basándonos en el reloj absoluto
+        // Calculamos dónde estamos basándonos en el reloj absoluto
         songPosition = (float)(AudioSettings.dspTime - dspSongTime) - firstBeatOffset;
 
-        // --- SISTEMA DE LOOP MATEMÁTICO ---
         // Si hemos configurado loop y la posición supera la duración de la canción...
         if (loopSong && songPosition >= songDuration)
         {
@@ -84,7 +81,7 @@ public class Conductor : MonoBehaviour
             lastReportedBeat = 0;
         }
 
-        // --- DISPARO DE EVENTOS (ON BEAT) ---
+        // --- DISPARO DE EVENTOS ---
         
         songPositionInBeats = songPosition / secPerBeat;
 
