@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1088761108221001453}
   - component: {fileID: 7384534121822737066}
   - component: {fileID: 5043484191061160674}
-  - component: {fileID: 5309375519410176250}
   - component: {fileID: 2315944571156086037}
   - component: {fileID: 1717306401368573314}
   m_Layer: 0
@@ -107,18 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RhythmInput
   toleranceSeconds: 0.2
---- !u!114 &5309375519410176250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837171825046877560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04a3f31e77011fd468a7d3ce3b98c542, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DummyGridMover
+  bufferTimeBeforeBeat: 0.1
+  minAccuracyThreshold: 0.4
 --- !u!61 &2315944571156086037
 BoxCollider2D:
   m_ObjectHideFlags: 0
