@@ -9,6 +9,7 @@ public class Conductor : MonoBehaviour
     public AudioSource musicSource; 
     public float bpm = 120f;
     public float firstBeatOffset = 0f; // Por si la canción tiene silencio al inicio
+    public float inputOffset = 0f;     // Latencia de input (se ajusta en calibración)
     [Tooltip("Marca esto si quieres que el sistema maneje el loop infinitamente")]
     public bool loopSong = true;
 
@@ -32,6 +33,9 @@ public class Conductor : MonoBehaviour
 
         // 1. Calculamos la duración de una negra (crotchet)
         secPerBeat = 60f / bpm;
+
+        // Cargar offset guardado
+        inputOffset = PlayerPrefs.GetFloat("InputOffset", 0f);
     }
 
     void Start()
@@ -96,7 +100,19 @@ public class Conductor : MonoBehaviour
     // Función auxiliar para el Input (Devuelve distancia al beat más cercano en beats)
     public float GetDistanceToNearestBeat()
     {
-        float nearestBeat = Mathf.Round(songPositionInBeats);
-        return songPositionInBeats - nearestBeat;
+        // Ajustamos la posición con el offset de input (latencia)
+        float adjustedSongPosition = songPosition - inputOffset;
+        float adjustedPositionInBeats = adjustedSongPosition / secPerBeat;
+
+        float nearestBeat = Mathf.Round(adjustedPositionInBeats);
+        return adjustedPositionInBeats - nearestBeat;
+    }
+
+    public void SetInputOffset(float newOffset)
+    {
+        inputOffset = newOffset;
+        PlayerPrefs.SetFloat("InputOffset", inputOffset);
+        PlayerPrefs.Save();
+        Debug.Log($"Nuevo Input Offset guardado: {inputOffset}s");
     }
 }
