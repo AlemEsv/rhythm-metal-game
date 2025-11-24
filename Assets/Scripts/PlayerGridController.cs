@@ -71,14 +71,27 @@ public class PlayerGridController : MonoBehaviour
     void OnRhythmMovementInput(Vector2 direction)
     {
         if (isMoving || combatComponent != null && !combatComponent.IsAlive) return;
-        
-        // Convertir Vector2 a Vector3Int para el grid
+
+        // En lugar de calcular y movernos ya, invocamos al TurnManager para que el se encargue
+        if (TurnManager.Instance != null)
+        {
+            TurnManager.Instance.ProcessTurn(direction);
+        }
+        else
+        {
+            // Fallback por si no hay TurnManager (para no romper)
+            ExecuteTurn(direction);
+        }
+    }
+
+    // Esta es la que llamará el TurnManager cuando sea momento de moverse visualmente
+    public void ExecuteTurn(Vector2 direction)
+    {
         Vector3Int gridDirection = new Vector3Int(
             Mathf.RoundToInt(direction.x),
             Mathf.RoundToInt(direction.y),
             0
         );
-        
         TryMoveOrAttack(gridDirection);
     }
 

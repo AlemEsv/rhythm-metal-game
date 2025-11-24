@@ -32,14 +32,11 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    // --- EL CORAZÓN DEL TURNO ---
     // Esta función se llama DESDE el Player cuando acierta el ritmo
     public void ProcessTurn(Vector2 playerInput)
     {
         // 1. FASE JUGADOR (Lógica)
         // Aquí validamos si el jugador chocó con pared, atacó, etc.
-        // Por ahora asumimos que el input es válido.
-        // (En el futuro: GridManager.CheckCollision(playerPos + input))
         Debug.Log("--- INICIO DE TURNO ---");
         Debug.Log("1. Player Lógica resuelta");
 
@@ -57,7 +54,6 @@ public class TurnManager : MonoBehaviour
         // Ahora que todos saben qué hacer y nadie va a chocar lógicamente...
 
         // A) Mover Jugador (Visual)
-        // Esto lo puedes disparar con un evento o llamada directa
         PlayerVisuals(playerInput); 
 
         // B) Mover Enemigos (Visual)
