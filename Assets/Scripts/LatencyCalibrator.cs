@@ -75,8 +75,8 @@ public class LatencyCalibrator : MonoBehaviour
 
         // Cambiar a la escena de resultados
         if (SceneLoader.Instance != null)
-            SceneLoader.Instance.LoadScene("CalibrationResultsScene");
+            SceneLoader.Instance.LoadScene("MainMenuScene");
         else
-            UnityEngine.SceneManagement.SceneManager.LoadScene("CalibrationResultsScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
     }
 }
