@@ -201,7 +201,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.16037738, g: 0, b: 0.010243526, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c57488d8f01e764aa2dae01c8201b15, type: 3}
   m_Name: 
@@ -1901,7 +1901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Conductor
   musicSource: {fileID: 1492209994}
-  bpm: 120
+  bpm: 160
   firstBeatOffset: 0
   inputOffset: 0
   loopSong: 1
@@ -1922,9 +1922,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: a2b049061070dc642a8ddf68c97260e6, type: 3}
+  m_Resource: {fileID: 8300000, guid: 220f78dc20fe07c46b40e64e174e56a9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.02
   m_Pitch: 1
   Loop: 1
   Mute: 0
