@@ -5,101 +5,99 @@ public class Conductor : MonoBehaviour
 {
     public static Conductor Instance;
 
-    [Header("Configuración Básica")]
-    public AudioSource musicSource; 
-    public float bpm = 120f;
-    public float firstBeatOffset = 0f; // Por si la canción tiene silencio al inicio
-    public float inputOffset = 0f;     // Latencia de input (se ajusta en calibración)
-    [Tooltip("Marca esto si quieres que el sistema maneje el loop infinitamente")]
-    public bool loopSong = true;
+    [Header("Configuración Principal")]
+    public SongData currentSongData; // Archivo de datos
+    public AudioSource musicSource;  // El componente de audio
 
-    [Header("Debug (Solo lectura)")]
-    public float songPosition;       // Posición actual en segundos (dentro del loop)
-    public float songPositionInBeats; // Posición actual en beats
-    public float secPerBeat;         // Cuánto dura un beat
+    [Header("Ajustes de Reproducción")]
+    public bool loopSong = true;     // ¿Se repite la canción?
+    public float inputOffset = 0f;   // Calibración de latencia
 
-    public UnityEvent OnBeat;        // Evento para que los enemigos/UI reaccionen
+    [Space(10)]
+    public UnityEvent OnBeat;        // Evento del Beat
 
-    // Variables internas para el cálculo preciso
-    private float dspSongTime;       // El momento exacto en que empezó (o reinició) la canción
+    public float SongPosition { get; private set; }
+    public float SongPositionInBeats { get; private set; }
+    public float SecPerBeat { get; private set; }
+
+    private float bpm;
+    private float firstBeatOffset;
+    private float dspSongTime;
     private int lastReportedBeat = 0;
-    private float songDuration;      // Duración total del clip de audio
+    private float songDuration;
 
     void Awake()
     {
-        // Singleton Pattern
         if (Instance != null && Instance != this) Destroy(this);
         else Instance = this;
 
-        // 1. Calculamos la duración de una negra (crotchet)
-        secPerBeat = 60f / bpm;
-
-        // Cargar offset guardado
+        // Cargar latencia guardada
         inputOffset = PlayerPrefs.GetFloat("InputOffset", 0f);
+
+        // cargar datos
+        if (currentSongData != null)
+        {
+            // Configurar AudioSource
+            musicSource.clip = currentSongData.audioClip;
+
+            // Configurar valores matemáticos internos
+            bpm = currentSongData.bpm;
+            firstBeatOffset = currentSongData.firstBeatOffset;
+
+            // Calcular duración del beat
+            SecPerBeat = 60f / bpm;
+
+            Debug.Log($"Conductor inicializado con: {currentSongData.songName} ({bpm} BPM)");
+        }
+        else
+        {
+            Debug.LogError("No hay SongData.");
+        }
     }
 
     void Start()
     {
-        // Configuración inicial del audio
-        if(musicSource.clip != null)
-        {
-            songDuration = musicSource.clip.length;
-        }
-        else
-        {
-            Debug.LogError("¡Falta el AudioClip en el AudioSource!");
-            return;
-        }
+        if (musicSource.clip == null) return;
 
-        musicSource.loop = loopSong; // Le decimos a Unity que loopee el audio físicamente
-        
-        // Guardamos el tiempo de inicio DSP
+        songDuration = musicSource.clip.length;
+        musicSource.loop = loopSong;
+
+        // Iniciar conteo de tiempo
         dspSongTime = (float)AudioSettings.dspTime;
-        
         musicSource.Play();
     }
 
     void Update()
     {
         if (!musicSource.isPlaying) return;
-        
-        // Calculamos dónde estamos basándonos en el reloj absoluto
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime) - firstBeatOffset;
 
-        // Si hemos configurado loop y la posición supera la duración de la canción...
-        if (loopSong && songPosition >= songDuration)
+        // Calcular posición en segundos
+        SongPosition = (float)(AudioSettings.dspTime - dspSongTime) - firstBeatOffset;
+
+        // Manejar Loop
+        if (loopSong && SongPosition >= songDuration)
         {
-            // Ajustamos el "tiempo de inicio" sumándole la duración de la canción.
-            // Esto engaña a la matemática para que crea que acabamos de empezar de nuevo,
-            // manteniendo la precisión perfecta del dspTime.
             dspSongTime += songDuration;
-            
-            // Recalculamos la posición para este frame
-            songPosition -= songDuration;
-            
-            // Reseteamos el contador de beats para que empiece desde 0 otra vez
+            SongPosition -= songDuration;
             lastReportedBeat = 0;
         }
 
-        // --- DISPARO DE EVENTOS ---
-        
-        songPositionInBeats = songPosition / secPerBeat;
+        // Calcular posición en Beats
+        SongPositionInBeats = SongPosition / SecPerBeat;
 
-        // Si hemos pasado al siguiente número entero de beat...
-        if (songPositionInBeats > lastReportedBeat + 1)
+        // Disparar Evento OnBeat
+        if (SongPositionInBeats > lastReportedBeat + 1)
         {
             lastReportedBeat++;
-            OnBeat.Invoke(); // ¡PUM! Disparar evento
-            // Debug.Log($"Beat: {lastReportedBeat}"); 
+            OnBeat.Invoke();
         }
     }
 
-    // Función auxiliar para el Input (Devuelve distancia al beat más cercano en beats)
+    // Función auxiliar utilizada por RhythmInput y otros sistemas
     public float GetDistanceToNearestBeat()
     {
-        // Ajustamos la posición con el offset de input (latencia)
-        float adjustedSongPosition = songPosition - inputOffset;
-        float adjustedPositionInBeats = adjustedSongPosition / secPerBeat;
+        float adjustedSongPosition = SongPosition - inputOffset;
+        float adjustedPositionInBeats = adjustedSongPosition / SecPerBeat;
 
         float nearestBeat = Mathf.Round(adjustedPositionInBeats);
         return adjustedPositionInBeats - nearestBeat;
@@ -110,6 +108,5 @@ public class Conductor : MonoBehaviour
         inputOffset = newOffset;
         PlayerPrefs.SetFloat("InputOffset", inputOffset);
         PlayerPrefs.Save();
-        Debug.Log($"Nuevo Input Offset guardado: {inputOffset}s");
     }
 }

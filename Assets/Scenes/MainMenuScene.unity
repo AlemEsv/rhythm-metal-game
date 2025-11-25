@@ -393,7 +393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 85, y: 63}
+  m_AnchoredPosition: {x: 92, y: 128}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122970505
@@ -536,13 +536,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1601920754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca6be90d789ce5644bb0ae26a4930605, type: 3}
+  m_Script: {fileID: 11500000, guid: bfd97f7736fb8f7468ff6369de9b93fe, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  gameSceneName: SampleScene
-  calibrationSceneName: CalibrationScene
-  optionsSceneName: OptionsScene
-  mainSceneName: MainScene
+  m_EditorClassIdentifier: Assembly-CSharp::SwitchScenes
+  nextSceneName: MainScene
 --- !u!1 &2024123043
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +630,7 @@ GameObject:
   - component: {fileID: 2067957736}
   - component: {fileID: 2067957738}
   - component: {fileID: 2067957737}
+  - component: {fileID: 2067957739}
   m_Layer: 5
   m_Name: Iniciar
   m_TagString: Untagged
@@ -656,7 +654,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -69}
+  m_AnchoredPosition: {x: 0, y: -163}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2067957737
@@ -758,6 +756,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067957735}
   m_CullTransparentMesh: 1
+--- !u!114 &2067957739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067957735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb33c65f7608a64682e8fe42b81e238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlinkingUI
+  targetText: {fileID: 2067957737}
+  blinkSpeed: 1
+  minAlpha: 0.2
+  maxAlpha: 1
+  startDelay: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
