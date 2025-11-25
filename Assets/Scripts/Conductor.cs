@@ -37,21 +37,17 @@ public class Conductor : MonoBehaviour
         // cargar datos
         if (currentSongData != null)
         {
-            // Configurar AudioSource
             musicSource.clip = currentSongData.audioClip;
-
-            // Configurar valores matemáticos internos
             bpm = currentSongData.bpm;
             firstBeatOffset = currentSongData.firstBeatOffset;
 
             // Calcular duración del beat
             SecPerBeat = 60f / bpm;
-
-            Debug.Log($"Conductor inicializado con: {currentSongData.songName} ({bpm} BPM)");
+            musicSource.playOnAwake = false;
         }
         else
         {
-            Debug.LogError("No hay SongData.");
+            Debug.LogError("No hay archivos de música.");
         }
     }
 
@@ -63,6 +59,7 @@ public class Conductor : MonoBehaviour
         musicSource.loop = loopSong;
 
         // Iniciar conteo de tiempo
+        lastReportedBeat = -1;
         dspSongTime = (float)AudioSettings.dspTime;
         musicSource.Play();
     }
@@ -79,7 +76,7 @@ public class Conductor : MonoBehaviour
         {
             dspSongTime += songDuration;
             SongPosition -= songDuration;
-            lastReportedBeat = 0;
+            lastReportedBeat = -1;
         }
 
         // Calcular posición en Beats

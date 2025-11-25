@@ -271,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 1073624128}
   smoothSpeed: 5
-  offset: {x: 1.5, y: 3.5, z: -10}
+  offset: {x: 1.5, y: 2.5, z: -10}
   minPosition: {x: 0, y: 0}
   maxPosition: {x: 0, y: 0}
   useLimits: 0
