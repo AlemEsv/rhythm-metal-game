@@ -4,12 +4,12 @@ using System;
 public class RhythmInput : MonoBehaviour
 {
     [Header("Tolerancia y Buffer")]
-    public float toleranceSeconds = 0.10f; // Reducido de 0.15f para mayor precisión
-    public float bufferTimeBeforeBeat = 0.1f;
+    public float toleranceSeconds = 0.20f;
+    public float bufferTimeBeforeBeat = 0.15f;
 
     [Tooltip("Porcentaje mínimo de precisión")]
     [Range(0f, 1f)]
-    public float minAccuracyThreshold = 0.4f;
+    public float minAccuracyThreshold = 0.3f;
 
     // Eventos
     public static event Action<Vector2> OnMovementInput;
@@ -23,10 +23,7 @@ public class RhythmInput : MonoBehaviour
 
     void Update()
     {
-        // Detectar input del jugador
         DetectInput();
-        
-        // Procesar input bufferado
         ProcessBufferedInput();
     }
 
@@ -52,41 +49,38 @@ public class RhythmInput : MonoBehaviour
 
     void ValidateInput(Vector2 direction)
     {
-        if (Conductor.Instance == null) 
-        {
-            Debug.LogWarning("RhythmInput: No hay instancia de Conductor");
-            return;
-        }
+        if (Conductor.Instance == null) return;
 
-        // Calculamos la distancia al beat más cercano
+        // distancia al beat más cercano
         float beatDiff = Conductor.Instance.GetDistanceToNearestBeat();
         float timeDiff = beatDiff * Conductor.Instance.SecPerBeat;
         
         // Calculamos cuál es el siguiente beat
         float currentBeat = Conductor.Instance.SongPositionInBeats;
         float targetBeat = Mathf.Round(currentBeat);
-        
-        // Si estamos antes del beat (timeDiff negativo) y dentro del buffer
-        if (timeDiff < 0 && Mathf.Abs(timeDiff) <= bufferTimeBeforeBeat)
+
+        // ¿Es un golpe válido?
+        if (Mathf.Abs(timeDiff) <= toleranceSeconds)
         {
-            // BUFFER: Guardamos el input para ejecutarlo en el beat exacto
+            // Limpiamos cualquier buffer pendiente para no duplicar acciones
+            hasBufferedInput = false;
+            ExecuteInput(direction, timeDiff);
+            return;
+        }
+
+        // ¿Es demasiado pronto, pero intención válida?
+        if (timeDiff < 0 && Mathf.Abs(timeDiff) <= (toleranceSeconds + bufferTimeBeforeBeat))
+        {
             bufferedInput = direction;
             hasBufferedInput = true;
             nextBeatToExecute = targetBeat;
-
+            Debug.Log($"<color=yellow>Muy temprano</color>");
             return;
-        }
-        
-        // Si estamos dentro de la ventana de tolerancia
-        if (Mathf.Abs(timeDiff) <= toleranceSeconds)
-        {
-            // Ejecutar inmediatamente
-            ExecuteInput(direction, timeDiff);
         }
         else
         {
-            // Fuera de la ventana de tiempo
-            Debug.Log($"<color=red> Fallaste por {Mathf.Abs(timeDiff):F3}s (Tolerancia: {toleranceSeconds}s)</color>");
+            // Demasiado tarde o demasiado pronto fuera de rango
+            Debug.Log($"<color=red>Fallaste por {Mathf.Abs(timeDiff):F3}s</color>");
             OnInputFail?.Invoke();
         }
     }
@@ -97,9 +91,8 @@ public class RhythmInput : MonoBehaviour
         if (Conductor.Instance == null) return;
 
         float currentBeat = Conductor.Instance.SongPositionInBeats;
-        
-        // Si hemos alcanzado o pasado el beat objetivo
-        if (currentBeat >= nextBeatToExecute)
+        // margen de seguridad 0.05
+        if (currentBeat >= nextBeatToExecute - 0.05f)
         {
             ExecuteInput(bufferedInput, 0f); // Ejecutamos con timing perfecto
             
@@ -119,17 +112,14 @@ public class RhythmInput : MonoBehaviour
         // Filtro de precisión mínima
         if (accuracy < minAccuracyThreshold)
         {
-            Debug.Log($"<color=orange>Precisión: {accuracy*100:F0}% (Requerido: {minAccuracyThreshold*100}%)</color>");
             OnInputFail?.Invoke();
             return;
         }
-        
-        string feedbackColor = normalizedError < 0.3f ? "lime" : "green";
-        string feedbackMsg = normalizedError < 0.3f ? "¡PERFECTO!" : "¡Bien!";
-        
-        Debug.Log($"<color={feedbackColor}> {feedbackMsg} (Precisión: {accuracy*100:F0}%)</color>");
-        
-        // Disparar eventos
+
+
+        string rating = accuracy > 0.8f ? "PERFECT" : (accuracy > 0.5f ? "GOOD" : "OK");
+        Debug.Log($"<color=green>{rating} - {accuracy * 100:F0}%</color>");
+
         OnMovementInput?.Invoke(direction);
         OnInputSuccess?.Invoke();
     }
