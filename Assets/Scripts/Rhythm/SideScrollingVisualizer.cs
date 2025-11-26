@@ -4,30 +4,29 @@ using DG.Tweening;
 
 public class SideScrollingVisualizer : MonoBehaviour
 {
-    [Header("Referencias UI")]
-    public RectTransform targetDiamond;
+    [Header("UI")]
+    public RectTransform target;
     public RectTransform spawnPoint;
-    public GameObject noteLinePrefab; 
-    public Image diamondImage;
+    public GameObject noteLine; 
+    public Image Image;
 
-    [Header("Configuracion de Ritmo")]
+    [Header("Ritmo")]
     public float beatsInAdvance = 4f;
 
-    [Header("Colores de Feedback")]
+    [Header("Colores")]
     public Color defaultColor = Color.white;
     public Color perfectColor = Color.green;
     public Color goodColor = Color.yellow;
     public Color badColor = Color.red;
     public float flashDuration = 0.15f;
 
-    // Estado interno
+
     private int lastSpawnedBeat = 0;
 
     void Start()
     {
-        if (diamondImage != null) diamondImage.color = defaultColor;
+        if (Image != null) Image.color = defaultColor;
 
-        // Inicializar contador de beats para evitar spawn masivo al inicio
         if (Conductor.Instance != null)
         {
             lastSpawnedBeat = (int)Conductor.Instance.SongPositionInBeats;
@@ -36,14 +35,29 @@ public class SideScrollingVisualizer : MonoBehaviour
 
     void OnEnable()
     {
+        // MOVIMIENTO
         RhythmInput.OnInputSuccess += HandleHit;
         RhythmInput.OnInputFail += HandleMiss;
+
+        // PARRY
+        PlayerCombat.OnParrySuccess += HandleHit;
+        PlayerCombat.OnParryFail += HandleMiss;
+
+        // AGARRE
+        PlayerHybridController.OnClingSuccess += HandleHit;
+        PlayerHybridController.OnClingFail += HandleMiss;
     }
 
     void OnDisable()
     {
         RhythmInput.OnInputSuccess -= HandleHit;
         RhythmInput.OnInputFail -= HandleMiss;
+
+        PlayerCombat.OnParrySuccess -= HandleHit;
+        PlayerCombat.OnParryFail -= HandleMiss;
+
+        PlayerHybridController.OnClingSuccess -= HandleHit;
+        PlayerHybridController.OnClingFail -= HandleMiss;
     }
 
     void Update()
@@ -67,7 +81,7 @@ public class SideScrollingVisualizer : MonoBehaviour
     void CreateNote(int beatIndex)
     {
         // Instanciar
-        GameObject newNote = Instantiate(noteLinePrefab, spawnPoint.transform.parent);
+        GameObject newNote = Instantiate(noteLine, spawnPoint.transform.parent);
 
         // Configuración Inicial
         newNote.transform.position = spawnPoint.transform.position;
@@ -76,11 +90,11 @@ public class SideScrollingVisualizer : MonoBehaviour
         newNote.transform.localScale = Vector3.one;
         newNote.transform.rotation = Quaternion.identity;
 
-        // Calcular duración del viaje
+        // Calcular duración
         float travelDuration = beatsInAdvance * Conductor.Instance.SecPerBeat;
 
         // movimiento
-        newNote.transform.DOMove(targetDiamond.transform.position, travelDuration)
+        newNote.transform.DOMove(target.transform.position, travelDuration)
             .SetEase(Ease.Linear) // Ritmo constante
             .OnComplete(() =>
             {
@@ -92,7 +106,7 @@ public class SideScrollingVisualizer : MonoBehaviour
     void HandleHit()
     {
         float accuracy = GetAccuracy();
-        Color colorToUse = accuracy > 0.8f ? perfectColor : goodColor;
+        Color colorToUse = accuracy > 0.6f ? perfectColor : goodColor;
 
         FlashDiamond(colorToUse, true);
     }
@@ -104,25 +118,25 @@ public class SideScrollingVisualizer : MonoBehaviour
 
     void FlashDiamond(Color color, bool punchEffect)
     {
-        if (diamondImage == null) return;
+        if (Image == null) return;
 
         // Matar animaciones anteriores
-        diamondImage.DOKill();
-        targetDiamond.DOKill();
+        Image.DOKill();
+        target.DOKill();
 
         // Cambio de color instantaneo y fade out
-        diamondImage.color = color;
-        diamondImage.DOColor(defaultColor, flashDuration);
+        Image.color = color;
+        Image.DOColor(defaultColor, flashDuration);
 
         // Efecto de golpe (Punch)
-        targetDiamond.localScale = Vector3.one; // Reset
+        target.localScale = Vector3.one; // Reset
         if (punchEffect)
         {
-            targetDiamond.DOPunchScale(Vector3.one * 0.3f, flashDuration, 10, 1);
+            target.DOPunchScale(Vector3.one * 0.3f, flashDuration, 10, 1);
         }
         else
         {
-            targetDiamond.DOShakeAnchorPos(flashDuration, 10, 20);
+            target.DOShakeAnchorPos(flashDuration, 10, 20);
         }
     }
 
@@ -130,8 +144,7 @@ public class SideScrollingVisualizer : MonoBehaviour
     {
         if (Conductor.Instance == null) return 0;
         float diff = Mathf.Abs(Conductor.Instance.GetDistanceToNearestBeat() * Conductor.Instance.SecPerBeat);
-        RhythmInput input = FindFirstObjectByType<RhythmInput>();
-        float tolerance = input != null ? input.toleranceSeconds : 0.2f;
+        float tolerance = 0.2f;
         return 1f - (diff / tolerance);
     }
 }
