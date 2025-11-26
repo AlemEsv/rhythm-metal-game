@@ -10,7 +10,7 @@ public class Conductor : MonoBehaviour
     public AudioSource musicSource;  // El componente de audio
 
     [Header("Ajustes de Reproducción")]
-    public bool loopSong = true;     // ¿Se repite la canción?
+    public bool loopSong = true;
     public float inputOffset = 0f;   // Calibración de latencia
 
     [Space(10)]
@@ -90,7 +90,7 @@ public class Conductor : MonoBehaviour
         }
     }
 
-    // Función auxiliar utilizada por RhythmInput y otros sistemas
+    // utilizada por RhythmInput y otros sistemas
     public float GetDistanceToNearestBeat()
     {
         float adjustedSongPosition = SongPosition - inputOffset;
