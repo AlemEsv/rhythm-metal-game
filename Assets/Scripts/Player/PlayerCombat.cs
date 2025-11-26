@@ -38,7 +38,6 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     void Update()
     {
-        // Contador de invulnerabilidad
         if (isInvulnerable)
         {
             invulnerabilityTimer -= Time.deltaTime;
@@ -49,7 +48,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         }
 
         // Input de Parry
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             AttemptParry();
         }
@@ -63,8 +62,6 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         
         // Disparar animación si existe
         if (animator != null) animator.SetTrigger("Attack");
-
-        // Invocar evento para que otros sistemas sepan que atacamos
         OnPlayerAttack?.Invoke(transform.position + transform.up);
     }
 
@@ -72,9 +69,9 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     {
         if (!IsAlive) return;
 
-        Attack(); // Reutilizamos la lógica visual de arriba
+        Attack();
         
-        // Aplicar daño específico si tenemos objetivo
+        // Aplicar daño específico
         if (target != null)
         {
             target.TakeDamage(attackDamage);
