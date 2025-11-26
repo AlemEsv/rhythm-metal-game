@@ -50,7 +50,7 @@ public class EnemyFlyingDemo_Robust : MonoBehaviour
     }
 
     // Animación de ataque
-    anim.CrossFade("attack_volador", 0f);
+    anim.CrossFade("atack_volador", 0f);
     yield return new WaitForSeconds(2f);
 
     // Animación de muerte
