@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerHybridController : MonoBehaviour
@@ -23,6 +24,9 @@ public class PlayerHybridController : MonoBehaviour
     [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private float groundCheckRadius = 0.2f;
 
+    public static event Action OnClingSuccess;
+    public static event Action OnClingFail;
+
     public float CurrentStamina { get; private set; }
     public bool IsGrounded { get; private set; }
     public bool IsClinging { get; private set; }
@@ -30,6 +34,7 @@ public class PlayerHybridController : MonoBehaviour
     private Rigidbody2D rb;
     private float defaultGravity;
     private bool isMovingHorizontal;
+    public float MaxStamina => maxStamina;
 
     void Awake()
     {
@@ -114,18 +119,17 @@ public class PlayerHybridController : MonoBehaviour
 
     private void HandleWallClingInput()
     {
-        // Solo procesamos si pulsamos Q en este frame (Toggle)
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            // Verificar Ritmo
             if (CheckRhythmPrecision())
             {
                 ToggleWallCling();
+                OnClingSuccess?.Invoke();
             }
             else
             {
-                Debug.Log("<color=red>¡Fallaste el ritmo del agarre!</color>");
-                // Opcional: Penalización de stamina
+                Debug.Log("<color=red>Fallaste el ritmo del agarre</color>");
+                OnClingFail?.Invoke();
             }
         }
     }
