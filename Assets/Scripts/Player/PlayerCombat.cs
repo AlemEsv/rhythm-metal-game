@@ -215,7 +215,6 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     public void Die()
     {
         if (!IsAlive) return;
-        Debug.Log("<color=red>GAME OVER</color>");
         OnPlayerDeath?.Invoke();
         if (animator != null) animator.SetTrigger("Die");
     }
