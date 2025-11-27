@@ -6,7 +6,6 @@ public class MainSceneController : MonoBehaviour
     public string optionsSceneName = "OptionsScene";
     public string gameSceneName = "SampleScene";
 
-    // Método para botón Options
     public void GoToOptions()
     {
         if (SceneLoader.Instance != null)
@@ -15,7 +14,6 @@ public class MainSceneController : MonoBehaviour
             SceneManager.LoadScene(optionsSceneName);
     }
 
-    // Método para botón Play
     public void GoToPlay()
     {
         if (SceneLoader.Instance != null)
