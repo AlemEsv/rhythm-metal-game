@@ -111,6 +111,12 @@ public class SideScrollingVisualizer : MonoBehaviour
         FlashDiamond(colorToUse, true);
     }
 
+    void HandleHit(float accuracy)
+    {
+        Color colorToUse = accuracy > 0.6f ? perfectColor : goodColor;
+        FlashDiamond(colorToUse, true);
+    }
+
     void HandleMiss()
     {
         FlashDiamond(badColor, false);

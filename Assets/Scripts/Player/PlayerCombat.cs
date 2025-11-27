@@ -12,12 +12,15 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     [Header("Combat Settings")]
     public float invulnerabilityDuration = 0.5f;
 
-    [Header("Parry")]
+    [Header("Parry System")]
     public int maxParryCharges = 4;
     public float chargeRegenTime = 20f;
-    public float parryWindow = 0.2f;
-    public LayerMask projectileLayer;
     public float parryRadius = 1.5f;
+    public LayerMask projectileLayer;
+
+    [Header("Ataque")]
+    public LayerMask enemyLayer;
+    public float attackRange = 0.8f;
 
     // Estado de Parry
     public int CurrentParryCharges { get; private set; }
@@ -41,8 +44,17 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     void Awake()
     {
-        // Iniciar con la barra llena
         CurrentParryCharges = maxParryCharges;
+    }
+
+    void OnEnable()
+    {
+        RhythmInput.OnCommandInput += HandleCombatCommand;
+    }
+
+    void OnDisable()
+    {
+        RhythmInput.OnCommandInput -= HandleCombatCommand;
     }
 
     void Update()
@@ -56,39 +68,113 @@ public class PlayerCombat : MonoBehaviour, IDamageable
             }
         }
 
-        // Regeneración de Parry
         HandleChargeRegeneration();
+    }
 
-        // Parry
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1))
+    private void HandleCombatCommand(RhythmActionType type, Vector2 direction)
+    {
+        if (!IsAlive) return;
+
+        switch (type)
         {
-            AttemptParry();
+            case RhythmActionType.AttackLeft:
+                PerformAttack(Vector2.left);
+                break;
+            case RhythmActionType.AttackRight:
+                PerformAttack(Vector2.right);
+                break;
+            case RhythmActionType.Parry:
+                AttemptParry();
+                break;
         }
     }
 
-    // LÓGICA DE PARRY
+    void PerformAttack(Vector2 dir)
+    {
+        if (dir.x != 0)
+            transform.localScale = new Vector3(Mathf.Sign(dir.x), 1, 1);
+
+        if (animator != null) animator.SetTrigger("Attack");
+        OnPlayerAttack?.Invoke(transform.position + (Vector3)dir);
+
+        Vector2 attackOrigin = (Vector2)transform.position + (dir * 0.5f);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(attackOrigin, attackRange, enemyLayer);
+
+        if (hits.Length > 0)
+        {
+            foreach (var hit in hits)
+            {
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null && damageable.IsAlive)
+                {
+                    damageable.TakeDamage(attackDamage);
+                    Debug.Log($"Golpe a {hit.name}");
+                }
+            }
+        }
+    }
+
+    void AttemptParry()
+    {
+        if (animator != null) animator.SetTrigger("Parry");
+
+        if (CurrentParryCharges <= 0)
+        {
+            Debug.Log("¡Sin cargas de Parry!");
+            return;
+        }
+
+        Collider2D[] nearbyProjectiles = Physics2D.OverlapCircleAll(transform.position, parryRadius, projectileLayer);
+        bool parrySuccess = false;
+
+        foreach (Collider2D proj in nearbyProjectiles)
+        {
+            RhythmicProjectile projectile = proj.GetComponent<RhythmicProjectile>();
+            if (projectile != null && projectile.CanBeParried())
+            {
+                projectile.Parry(transform.position);
+                parrySuccess = true;
+            }
+        }
+
+        if (parrySuccess)
+        {
+            Debug.Log("PARRY EXITOSO");
+            ConsumeParryCharge();
+            OnParrySuccess?.Invoke();
+            transform.DOPunchScale(Vector3.one * 0.2f, 0.2f, 5, 1f);
+        }
+        else
+        {
+            Debug.Log("Parry al aire (Gasta carga)");
+            ConsumeParryCharge();
+            OnParryFail?.Invoke();
+        }
+    }
+
     void HandleChargeRegeneration()
     {
-        // Solo regeneramos si no estamos llenos
         if (CurrentParryCharges < maxParryCharges)
         {
             regenTimer += Time.deltaTime;
 
-            // Si se completa el tiempo, ganamos una carga
             if (regenTimer >= chargeRegenTime)
             {
                 CurrentParryCharges++;
-                regenTimer = 0f; // Reseteamos timer para la siguiente carga
-
-                // Si todavía falta para el máximo, mantenemos el remanente por si hubo lag
-                if (CurrentParryCharges > maxParryCharges)
-                    CurrentParryCharges = maxParryCharges;
+                regenTimer = 0f;
+                if (CurrentParryCharges > maxParryCharges) CurrentParryCharges = maxParryCharges;
             }
         }
         else
         {
             regenTimer = 0f;
         }
+    }
+
+    void ConsumeParryCharge()
+    {
+        CurrentParryCharges--;
+        if (CurrentParryCharges == maxParryCharges - 1) regenTimer = 0f;
     }
 
     public float GetParryBarFillAmount()
@@ -100,98 +186,6 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         float nextChargeProgress = regenTimer / chargeRegenTime;
 
         return currentBaseFill + (nextChargeProgress * singleChargeFraction);
-    }
-
-    void AttemptParry()
-    {
-        // Verificar si tenemos cargas
-        if (CurrentParryCharges <= 0)
-        {
-            // sonido de "Error"
-            return;
-        }
-
-        // Verificar Ritmo
-        if (!CheckParryTiming())
-        {
-            Debug.Log("Parry fuera de ritmo");
-            ConsumeParryCharge(); // Castigo: Gastas carga por fallar el ritmo
-            OnParryFail?.Invoke();
-            return;
-        }
-
-        // Verificar Proyectiles Cercanos
-        Collider2D[] nearbyProjectiles = Physics2D.OverlapCircleAll(transform.position, parryRadius, projectileLayer);
-
-        if (nearbyProjectiles.Length > 0)
-        {
-            bool parrySuccess = false;
-
-            foreach (Collider2D proj in nearbyProjectiles)
-            {
-                RhythmicProjectile projectile = proj.GetComponent<RhythmicProjectile>();
-                if (projectile != null && projectile.CanBeParried())
-                {
-                    projectile.Parry(transform.position);
-                    parrySuccess = true;
-                }
-            }
-
-            if (parrySuccess)
-            {
-                Debug.Log("PARRY EXITOSO");
-                ConsumeParryCharge(); // Gastamos la carga al usarla
-
-                OnParrySuccess?.Invoke();
-                transform.DOPunchScale(Vector3.one * 0.2f, 0.2f, 5, 1f);
-            }
-        }
-        else
-        {
-            Debug.Log("No hay proyectiles cerca");
-            ConsumeParryCharge(); // Gastas carga si haces parry al aire
-            OnParryFail?.Invoke();
-        }
-    }
-
-    void ConsumeParryCharge()
-    {
-        CurrentParryCharges--;
-        // No reseteamos el regenTimer para que siga cargando la siguiente barra en segundo plano
-        // a menos que estuvieramos al máximo, entonces empieza de 0.
-        if (CurrentParryCharges == maxParryCharges - 1) regenTimer = 0f;
-    }
-
-    bool CheckParryTiming()
-    {
-        if (Conductor.Instance == null) return true;
-
-        float distanceToBeat = Conductor.Instance.GetDistanceToNearestBeat();
-        float tolerance = Conductor.Instance.SecPerBeat * parryWindow;
-
-        return Mathf.Abs(distanceToBeat) <= tolerance;
-    }
-
-    // LÓGICA DE COMBATE
-    public void Attack()
-    {
-        if (!IsAlive) return;
-
-        if (animator != null) animator.SetTrigger("Attack");
-        OnPlayerAttack?.Invoke(transform.position + transform.up);
-    }
-
-    public void Attack(Vector3 targetPosition, IDamageable target)
-    {
-        if (!IsAlive) return;
-
-        Attack();
-
-        if (target != null)
-        {
-            target.TakeDamage(attackDamage);
-            Debug.Log($"Impacto confirmado en {targetPosition}");
-        }
     }
 
     public void TakeDamage(int damage)
@@ -221,20 +215,16 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     public void Die()
     {
         if (!IsAlive) return;
-
         Debug.Log("<color=red>GAME OVER</color>");
         OnPlayerDeath?.Invoke();
-
         if (animator != null) animator.SetTrigger("Die");
     }
 
     public void Heal(int amount)
     {
         if (!IsAlive) return;
-
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-
         OnHealthChanged?.Invoke(currentHealth);
     }
 
@@ -242,5 +232,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, parryRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + Vector3.right * 0.5f, attackRange);
     }
 }

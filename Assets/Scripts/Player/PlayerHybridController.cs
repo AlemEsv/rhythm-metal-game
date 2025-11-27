@@ -5,92 +5,122 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerHybridController : MonoBehaviour
 {
-    // Configuración de Grid
-    [SerializeField] private float gridSize = 1f; 
+    [Header("Configuración de Grid")]
+    [SerializeField] private float gridSize = 1f;
     [SerializeField] private float moveDuration = 0.15f;
+    [SerializeField] private int standardStride = 2;
 
+    [Header("Salto")]
     [SerializeField] private float jumpHeightBlocks = 2f;
-    
-    // Wall Cling
+
+    [Header("Wall Cling")]
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float wallCheckDistance = 0.6f;
-    [SerializeField] private float rhythmTolerance = 0.15f; // Ventana de tiempo para acertar la Q
-    
-    // Stamina
+
+    [Header("Stamina")]
     [SerializeField] private float maxStamina = 100f;
     [SerializeField] private float staminaDrainRate = 20f;
     [SerializeField] private float staminaRegenRate = 50f;
     [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private float groundCheckRadius = 0.2f;
 
-    public static event Action OnClingSuccess;
-    public static event Action OnClingFail;
+    [Header("Visuals")]
+    public Animator animator;
 
+    // Estado
     public float CurrentStamina { get; private set; }
+    public float MaxStamina => maxStamina;
     public bool IsGrounded { get; private set; }
     public bool IsClinging { get; private set; }
+
+    // Eventos
+    public static event Action OnClingSuccess;
+    public static event Action OnClingFail;
 
     private Rigidbody2D rb;
     private float defaultGravity;
     private bool isMovingHorizontal;
-    public float MaxStamina => maxStamina;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 2f;
+        rb.gravityScale = 3f;
         rb.freezeRotation = true;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        
         defaultGravity = rb.gravityScale;
         CurrentStamina = maxStamina;
     }
 
-    void OnEnable()
-    {
-        RhythmInput.OnMovementInput += HandleRhythmicAction;
-    }
-
-    void OnDisable()
-    {
-        RhythmInput.OnMovementInput -= HandleRhythmicAction;
-    }
+    void OnEnable() { RhythmInput.OnCommandInput += HandleRhythmCommand; }
+    void OnDisable() { RhythmInput.OnCommandInput -= HandleRhythmCommand; }
 
     void Update()
     {
         CheckSurroundings();
-        HandleWallClingInput(); // Detectar tecla Q
-        ManageStaminaAndClingState(); // Gestionar el estado de agarre y stamina
+        ManageStaminaAndClingState();
+        UpdateAnimations();
     }
 
-    private void HandleRhythmicAction(Vector2 direction)
+    private void UpdateAnimations()
     {
-        if (direction.x != 0)
+        if (animator == null) return;
+
+        animator.SetBool("IsRunning", isMovingHorizontal);
+
+        animator.SetBool("IsGrounded", IsGrounded);
+
+        animator.SetFloat("VerticalVelocity", rb.linearVelocity.y);
+
+        animator.SetBool("IsClinging", IsClinging);
+    }
+
+    private void HandleRhythmCommand(RhythmActionType type, Vector2 direction)
+    {
+        switch (type)
         {
-            MoveHorizontal(direction.x);
-        }
-        else if (direction.y > 0)
-        {
-            TryRhythmicJump();
+            case RhythmActionType.Move:
+                if (direction.x != 0) MoveHorizontal(direction.x, standardStride);
+                break;
+
+            case RhythmActionType.Jump:
+                TryRhythmicJump();
+                break;
+
+            case RhythmActionType.WallCling:
+                AttemptWallCling();
+                break;
         }
     }
 
-    private void MoveHorizontal(float dirX)
+    private void MoveHorizontal(float dirX, int blocks)
     {
         if (isMovingHorizontal) return;
 
-        if (Physics2D.Raycast(transform.position, Vector2.right * dirX, gridSize, wallLayer))
+        // Girar sprite hacia la dirección del movimiento
+        if (dirX != 0) transform.localScale = new Vector3(Mathf.Sign(dirX), 1, 1);
+
+        float distance = gridSize * blocks;
+
+        // Si hay pared a 2 bloques, intentar mover 1
+        if (blocks > 1 && Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
         {
-            return;
+            distance = gridSize;
+            if (Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
+            {
+                return; // Bloqueado
+            }
+        }
+        else if (Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
+        {
+            return; // Bloqueado
         }
 
         isMovingHorizontal = true;
-        // Si nos movemos, nos soltamos de la pared automáticamente
         if (IsClinging) StopCling();
 
-        float targetX = transform.position.x + (dirX * gridSize);
-        rb.DOMoveX(targetX, moveDuration).SetEase(Ease.OutQuad).OnComplete(() => 
+        float targetX = transform.position.x + (dirX * distance);
+
+        rb.DOMoveX(targetX, moveDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             isMovingHorizontal = false;
         });
@@ -109,59 +139,37 @@ public class PlayerHybridController : MonoBehaviour
         if (IsClinging) StopCling();
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-
         float targetHeight = jumpHeightBlocks * gridSize;
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
         float jumpVelocity = Mathf.Sqrt(2 * gravity * targetHeight);
 
         rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
-    }
 
-    private void HandleWallClingInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (CheckRhythmPrecision())
-            {
-                ToggleWallCling();
-                OnClingSuccess?.Invoke();
-            }
-            else
-            {
-                Debug.Log("<color=red>Fallaste el ritmo del agarre</color>");
-                OnClingFail?.Invoke();
-            }
+        if (animator != null){
+            animator.SetTrigger("Jump");
         }
     }
 
-    // Verifica si estamos cerca del beat 
-    private bool CheckRhythmPrecision()
+    private void AttemptWallCling()
     {
-        if (Conductor.Instance == null) return true; // Si no hay música, permitimos siempre
-
-        float beatDiff = Conductor.Instance.GetDistanceToNearestBeat();
-        float timeDiff = Mathf.Abs(beatDiff * Conductor.Instance.SecPerBeat);
-
-        return timeDiff <= rhythmTolerance;
-    }
-
-    private void ToggleWallCling()
-    {
-        // Si ya estamos agarrados, nos soltamos
         if (IsClinging)
         {
             StopCling();
+            OnClingSuccess?.Invoke();
             return;
         }
 
-        // Si no estamos agarrados, intentamos agarrarnos
         bool touchingWall = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer) ||
                             Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
 
         if (touchingWall && !IsGrounded && CurrentStamina > 0)
         {
             StartCling();
-            Debug.Log("<color=green>¡Agarre Perfecto!</color>");
+            OnClingSuccess?.Invoke();
+        }
+        else
+        {
+            OnClingFail?.Invoke();
         }
     }
 
@@ -178,55 +186,31 @@ public class PlayerHybridController : MonoBehaviour
         rb.gravityScale = defaultGravity;
     }
 
-    // Gestión de estado y stamina
-
     private void ManageStaminaAndClingState()
     {
-        // Si estamos agarrados, consumimos Stamina
         if (IsClinging)
         {
-            // Verificar que seguimos tocando la pared (por si acaso el objeto pared desaparece)
             bool touchingWall = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer) ||
                                 Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
 
-            if (!touchingWall)
-            {
-                StopCling();
-            }
+            if (!touchingWall) StopCling();
 
             CurrentStamina -= staminaDrainRate * Time.deltaTime;
-
-            // CAÍDA FORZADA: Si se acaba la stamina
-            if (CurrentStamina <= 0)
-            {
-                CurrentStamina = 0;
-                StopCling();
-                Debug.Log("<color=orange>¡Stamina agotada! Cayendo...</color>");
-            }
+            if (CurrentStamina <= 0) { CurrentStamina = 0; StopCling(); }
         }
         else if (IsGrounded && CurrentStamina < maxStamina)
         {
-            // Regenerar en el suelo
             CurrentStamina += staminaRegenRate * Time.deltaTime;
         }
-
         CurrentStamina = Mathf.Clamp(CurrentStamina, 0, maxStamina);
     }
 
     private void CheckSurroundings()
     {
         if (groundCheckPoint != null)
-            IsGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
-        
-        // Si tocamos el suelo mientras estábamos agarrados, soltamos (reset lógico)
-        if (IsGrounded && IsClinging) StopCling();
-    }
+            IsGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius,
+                1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Wall")); // Aseguramos capas
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * wallCheckDistance);
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.left * wallCheckDistance);
-        if (groundCheckPoint != null) Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
+        if (IsGrounded && IsClinging) StopCling();
     }
 }

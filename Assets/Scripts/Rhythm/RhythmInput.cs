@@ -1,86 +1,99 @@
 using UnityEngine;
 using System;
 
+public enum RhythmActionType
+{
+    Move,       // A / D (2 Bloques)
+    Jump,       // W
+    WallCling,  // SPACE
+    AttackLeft, // Q
+    AttackRight,// E
+    Parry       // S
+}
+
 public class RhythmInput : MonoBehaviour
 {
-    [Header("Tolerancia y Buffer")]
-    public float toleranceSeconds = 0.20f;
+    [Header("Tolerancia")]
+    public float toleranceSeconds = 0.25f;
     public float bufferTimeBeforeBeat = 0.15f;
-
-    [Tooltip("Porcentaje mínimo de precisión")]
-    [Range(0f, 1f)]
-    public float minAccuracyThreshold = 0.3f;
+    [Range(0f, 1f)] public float minAccuracyThreshold = 0.3f;
 
     // Eventos
-    public static event Action<Vector2> OnMovementInput;
-    public static event Action OnInputSuccess;
+    public static event Action<RhythmActionType, Vector2> OnCommandInput;
+    public static event Action<float> OnInputSuccess;
     public static event Action OnInputFail;
 
-    // Sistema de Buffer
-    private Vector2 bufferedInput = Vector2.zero;
+    // Buffer simple
+    private RhythmActionType bufferedAction;
+    private Vector2 bufferedDirection;
     private bool hasBufferedInput = false;
     private float nextBeatToExecute = -1f;
 
     void Update()
     {
+        if (Conductor.Instance == null) return;
+
         DetectInput();
         ProcessBufferedInput();
     }
 
     void DetectInput()
     {
-        Vector2 input = Vector2.zero;
+        RhythmActionType action = RhythmActionType.Move; // Default
+        Vector2 dir = Vector2.zero;
+        bool hasInput = false;
 
-        // Detección de teclas WASD y Flechas
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) 
-            input = Vector2.up;
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) 
-            input = Vector2.down;
-        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) 
-            input = Vector2.left;
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) 
-            input = Vector2.right;
+        // --- MAPEO DE CONTROLES ---
 
-        if (input != Vector2.zero)
+        // MOVIMIENTO (A/D) -> 2 Bloques
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        { action = RhythmActionType.Move; dir = Vector2.left; hasInput = true; }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        { action = RhythmActionType.Move; dir = Vector2.right; hasInput = true; }
+
+        // SALTO (W)
+        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        { action = RhythmActionType.Jump; dir = Vector2.up; hasInput = true; }
+
+        // AGARRE (SPACE)
+        else if (Input.GetKeyDown(KeyCode.Space))
+        { action = RhythmActionType.WallCling; hasInput = true; }
+
+        // COMBATE (Q, E, S)
+        else if (Input.GetKeyDown(KeyCode.Q)) { action = RhythmActionType.AttackLeft; hasInput = true; }
+        else if (Input.GetKeyDown(KeyCode.E)) { action = RhythmActionType.AttackRight; hasInput = true; }
+        else if (Input.GetKeyDown(KeyCode.S)) { action = RhythmActionType.Parry; hasInput = true; }
+
+        if (hasInput)
         {
-            ValidateInput(input);
+            ValidateInput(action, dir);
         }
     }
 
-    void ValidateInput(Vector2 direction)
+    void ValidateInput(RhythmActionType action, Vector2 dir)
     {
-        if (Conductor.Instance == null) return;
-
-        // distancia al beat más cercano
         float beatDiff = Conductor.Instance.GetDistanceToNearestBeat();
         float timeDiff = beatDiff * Conductor.Instance.SecPerBeat;
-        
-        // Calculamos cuál es el siguiente beat
-        float currentBeat = Conductor.Instance.SongPositionInBeats;
-        float targetBeat = Mathf.Round(currentBeat);
+        int targetBeat = Mathf.RoundToInt(Conductor.Instance.SongPositionInBeats);
 
-        // ¿Es un golpe válido?
+        // 1. ÉXITO (En tiempo)
         if (Mathf.Abs(timeDiff) <= toleranceSeconds)
         {
-            // Limpiamos cualquier buffer pendiente para no duplicar acciones
             hasBufferedInput = false;
-            ExecuteInput(direction, timeDiff);
-            return;
+            ExecuteCommand(action, dir, timeDiff);
         }
-
-        // ¿Es demasiado pronto, pero intención válida?
-        if (timeDiff < 0 && Mathf.Abs(timeDiff) <= (toleranceSeconds + bufferTimeBeforeBeat))
+        // 2. BUFFER (Temprano)
+        else if (timeDiff < 0 && Mathf.Abs(timeDiff) <= (toleranceSeconds + bufferTimeBeforeBeat))
         {
-            bufferedInput = direction;
+            bufferedAction = action;
+            bufferedDirection = dir;
             hasBufferedInput = true;
             nextBeatToExecute = targetBeat;
-            Debug.Log($"<color=yellow>Muy temprano</color>");
-            return;
+            Debug.Log($"<color=yellow>Buffer: {action}</color>");
         }
+        // 3. FALLO
         else
         {
-            // Demasiado tarde o demasiado pronto fuera de rango
-            Debug.Log($"<color=red>Fallaste por {Mathf.Abs(timeDiff):F3}s</color>");
             OnInputFail?.Invoke();
         }
     }
@@ -88,49 +101,26 @@ public class RhythmInput : MonoBehaviour
     void ProcessBufferedInput()
     {
         if (!hasBufferedInput) return;
-        if (Conductor.Instance == null) return;
 
         float currentBeat = Conductor.Instance.SongPositionInBeats;
-        // margen de seguridad 0.05
         if (currentBeat >= nextBeatToExecute - 0.05f)
         {
-            ExecuteInput(bufferedInput, 0f); // Ejecutamos con timing perfecto
-            
-            // Limpiamos el buffer
+            ExecuteCommand(bufferedAction, bufferedDirection, 0f);
             hasBufferedInput = false;
-            bufferedInput = Vector2.zero;
             nextBeatToExecute = -1f;
         }
     }
 
-    void ExecuteInput(Vector2 direction, float timeDifference)
+    void ExecuteCommand(RhythmActionType action, Vector2 dir, float timeDifference)
     {
-        // Calculamos el error normalizado (0 = perfecto, 1 = límite de tolerancia)
-        float normalizedError = Mathf.Abs(timeDifference) / toleranceSeconds;
-        float accuracy = 1.0f - normalizedError;
-
-        // Filtro de precisión mínima
+        float accuracy = 1.0f - (Mathf.Abs(timeDifference) / toleranceSeconds);
         if (accuracy < minAccuracyThreshold)
         {
             OnInputFail?.Invoke();
             return;
         }
 
-
-        string rating = accuracy > 0.8f ? "PERFECT" : (accuracy > 0.5f ? "GOOD" : "OK");
-        Debug.Log($"<color=green>{rating} - {accuracy * 100:F0}%</color>");
-
-        OnMovementInput?.Invoke(direction);
-        OnInputSuccess?.Invoke();
-    }
-
-    public float GetCurrentBeatProximity()
-    {
-        if (Conductor.Instance == null) return 1f;
-        
-        float beatDiff = Conductor.Instance.GetDistanceToNearestBeat();
-        float timeDiff = Mathf.Abs(beatDiff * Conductor.Instance.SecPerBeat);
-        
-        return Mathf.Clamp01(timeDiff / toleranceSeconds);
+        OnCommandInput?.Invoke(action, dir);
+        OnInputSuccess?.Invoke(accuracy);
     }
 }
