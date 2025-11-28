@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: test_song
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: sonic
-  audioClip: {fileID: 8300000, guid: 50e8dca3f689ead44b17531b8a4bd683, type: 3}
+  audioClip: {fileID: 8300000, guid: 31627fd989191784eaa7c4375c70c108, type: 3}
   bpm: 158
   firstBeatOffset: 0
