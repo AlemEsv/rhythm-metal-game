@@ -1,0 +1,1336 @@
+fileFormatVersion: 2
+guid: 2c901832259f13146a54faf17f8ddd74
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4902391765277666467
+    second: cerbero_total_0
+  - first:
+      213: 269742185619469120
+    second: cerbero_total_1
+  - first:
+      213: 1218844949710809747
+    second: cerbero_total_2
+  - first:
+      213: 8775693719853253246
+    second: cerbero_total_3
+  - first:
+      213: 7038839204259190733
+    second: cerbero_total_4
+  - first:
+      213: 6643889953089228663
+    second: cerbero_total_5
+  - first:
+      213: 327919663855853936
+    second: cerbero_total_6
+  - first:
+      213: -1207544579650844545
+    second: cerbero_total_7
+  - first:
+      213: 3762968264890069027
+    second: cerbero_total_8
+  - first:
+      213: 3255925505152359895
+    second: cerbero_total_9
+  - first:
+      213: -1222823906464711184
+    second: cerbero_total_10
+  - first:
+      213: 3038700708222406253
+    second: cerbero_total_11
+  - first:
+      213: 702365862712470746
+    second: cerbero_total_12
+  - first:
+      213: 4499797356784590926
+    second: cerbero_total_13
+  - first:
+      213: 1566756527814499728
+    second: cerbero_total_14
+  - first:
+      213: -8328762994147810096
+    second: cerbero_total_15
+  - first:
+      213: 7908072987505420437
+    second: cerbero_total_16
+  - first:
+      213: -2816845828124269235
+    second: cerbero_total_17
+  - first:
+      213: 274294361050345267
+    second: cerbero_total_18
+  - first:
+      213: -3185461403206000335
+    second: cerbero_total_19
+  - first:
+      213: -7180255483352418337
+    second: cerbero_total_20
+  - first:
+      213: 8715311150239041518
+    second: cerbero_total_21
+  - first:
+      213: 5758621372174743263
+    second: cerbero_total_22
+  - first:
+      213: 4795124640140370932
+    second: cerbero_total_23
+  - first:
+      213: 2712967295423687776
+    second: cerbero_total_24
+  - first:
+      213: -3998285729371445325
+    second: cerbero_total_25
+  - first:
+      213: -755490642064242662
+    second: cerbero_total_26
+  - first:
+      213: -8890564993620265804
+    second: cerbero_total_27
+  - first:
+      213: 2014412132929505603
+    second: cerbero_total_28
+  - first:
+      213: 4399535707392796355
+    second: cerbero_total_29
+  - first:
+      213: 4694881925693978530
+    second: cerbero_total_30
+  - first:
+      213: 5625639581114701570
+    second: cerbero_total_31
+  - first:
+      213: 484321499065328975
+    second: cerbero_total_32
+  - first:
+      213: -3848546356351843781
+    second: cerbero_total_33
+  - first:
+      213: -8829664694276855909
+    second: cerbero_total_34
+  - first:
+      213: -2134117575342470845
+    second: cerbero_total_35
+  - first:
+      213: 6565646659336193370
+    second: cerbero_total_36
+  - first:
+      213: -8802566472885663187
+    second: cerbero_total_37
+  - first:
+      213: -8674159689095948237
+    second: cerbero_total_38
+  - first:
+      213: -5391117481042205621
+    second: cerbero_total_39
+  - first:
+      213: 5982899573819474596
+    second: cerbero_total_40
+  - first:
+      213: -725455922568325012
+    second: cerbero_total_41
+  - first:
+      213: 9091625024293236776
+    second: cerbero_total_42
+  - first:
+      213: -1338935969179624700
+    second: cerbero_total_43
+  - first:
+      213: -3032290454973720496
+    second: cerbero_total_44
+  - first:
+      213: -2655544826077376545
+    second: cerbero_total_45
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: cerbero_total_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 533
+        width: 87
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5313d8d9a437fbb0800000000000000
+      internalID: -4902391765277666467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_1
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 596
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04339c2b6115eb300800000000000000
+      internalID: 269742185619469120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_2
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 598
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39aaac726053ae010800000000000000
+      internalID: 1218844949710809747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_3
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 536
+        width: 80
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e72ca7d41f689c970800000000000000
+      internalID: 8775693719853253246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_4
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 596
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc756f086fafea160800000000000000
+      internalID: 7038839204259190733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_5
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 532
+        width: 86
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77f8ba426b6d33c50800000000000000
+      internalID: 6643889953089228663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_6
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 532
+        width: 102
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0716ef662310d8400800000000000000
+      internalID: 327919663855853936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_7
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 464
+        width: 93
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7886774a90fd3fe0800000000000000
+      internalID: -1207544579650844545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_8
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 464
+        width: 77
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32037d923bfb83430800000000000000
+      internalID: 3762968264890069027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_9
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 463
+        width: 85
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dd9dbd0ffe5f2d20800000000000000
+      internalID: 3255925505152359895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_10
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 463
+        width: 102
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fdb058c228a70fe0800000000000000
+      internalID: -1222823906464711184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_11
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 380
+        width: 93
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6e0354c132ab2a20800000000000000
+      internalID: 3038700708222406253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_12
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 443
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adc6655e70e4fb900800000000000000
+      internalID: 702365862712470746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_13
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 382
+        width: 92
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e402364eadd727e30800000000000000
+      internalID: 4499797356784590926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_14
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 449
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09d58e1d2cc3eb510800000000000000
+      internalID: 1566756527814499728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_15
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 394
+        width: 85
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d4a66b3f2a4a6c80800000000000000
+      internalID: -8328762994147810096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_16
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 394
+        width: 81
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5986f1ebb7e1fbd60800000000000000
+      internalID: 7908072987505420437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_17
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 380
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d45ac93c4ad88e8d0800000000000000
+      internalID: -2816845828124269235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_18
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 374
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33f6c42a44d7ec300800000000000000
+      internalID: 274294361050345267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_19
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 321
+        width: 93
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13160382bb7fac3d0800000000000000
+      internalID: -3185461403206000335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_20
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 372
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd77a363eab9a5c90800000000000000
+      internalID: -7180255483352418337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_21
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 376
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee7cff0c05103f870800000000000000
+      internalID: 8715311150239041518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_22
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 329
+        width: 84
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd6b274a0abbaef40800000000000000
+      internalID: 5758621372174743263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_23
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 326
+        width: 89
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f32a4d5474bb8240800000000000000
+      internalID: 4795124640140370932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_24
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 325
+        width: 79
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06c2bfa916566a520800000000000000
+      internalID: 2712967295423687776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_25
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 366
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b72d4e105c3388c0800000000000000
+      internalID: -3998285729371445325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_26
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 371
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1801a88345f385f0800000000000000
+      internalID: -755490642064242662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_27
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 372
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b4bdb61e3e5e9480800000000000000
+      internalID: -8890564993620265804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_28
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 366
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349008e7921a4fb10800000000000000
+      internalID: 2014412132929505603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_29
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 328
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c66bc78a6a4e0d30800000000000000
+      internalID: 4399535707392796355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_30
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 253
+        width: 83
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a73463ac32972140800000000000000
+      internalID: 4694881925693978530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_31
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 255
+        width: 93
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20718b2a469421e40800000000000000
+      internalID: 5625639581114701570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_32
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 255
+        width: 88
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45afdc56d7a8b600800000000000000
+      internalID: 484321499065328975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_33
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 165
+        width: 113
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b324608ba77379ac0800000000000000
+      internalID: -3848546356351843781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_34
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 179
+        width: 91
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b97e1dbfdbab67580800000000000000
+      internalID: -8829664694276855909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_35
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 185
+        width: 72
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3494bcc4f571262e0800000000000000
+      internalID: -2134117575342470845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_36
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 185
+        width: 74
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a55c672b9dcdd1b50800000000000000
+      internalID: 6565646659336193370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_37
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 57
+        width: 92
+        height: 111
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2a03ef4e6007d580800000000000000
+      internalID: -8802566472885663187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_38
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 56
+        width: 88
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3385c6e68b13f9780800000000000000
+      internalID: -8674159689095948237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_39
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 123
+        width: 88
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b44a410e637ee25b0800000000000000
+      internalID: -5391117481042205621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_40
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 103
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a28850b677870350800000000000000
+      internalID: 5982899573819474596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_41
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 123
+        width: 88
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c689c1b9ea9aee5f0800000000000000
+      internalID: -725455922568325012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_42
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 113
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 820fc044ac0fb2e70800000000000000
+      internalID: 9091625024293236776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_43
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 63
+        width: 91
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40b1e0c74d42b6de0800000000000000
+      internalID: -1338935969179624700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_44
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 61
+        width: 89
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 058db7f95e32be5d0800000000000000
+      internalID: -3032290454973720496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_45
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 99
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdf0884ec0c952bd0800000000000000
+      internalID: -2655544826077376545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cerbero_total_46
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 253
+        width: 94
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbbba681736f7fd459cd8071ca6bbb73
+      internalID: -1415953973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: eb96b13351c596b46b484fab3669cbea
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      cerbero_total_0: -4902391765277666467
+      cerbero_total_1: 269742185619469120
+      cerbero_total_10: -1222823906464711184
+      cerbero_total_11: 3038700708222406253
+      cerbero_total_12: 702365862712470746
+      cerbero_total_13: 4499797356784590926
+      cerbero_total_14: 1566756527814499728
+      cerbero_total_15: -8328762994147810096
+      cerbero_total_16: 7908072987505420437
+      cerbero_total_17: -2816845828124269235
+      cerbero_total_18: 274294361050345267
+      cerbero_total_19: -3185461403206000335
+      cerbero_total_2: 1218844949710809747
+      cerbero_total_20: -7180255483352418337
+      cerbero_total_21: 8715311150239041518
+      cerbero_total_22: 5758621372174743263
+      cerbero_total_23: 4795124640140370932
+      cerbero_total_24: 2712967295423687776
+      cerbero_total_25: -3998285729371445325
+      cerbero_total_26: -755490642064242662
+      cerbero_total_27: -8890564993620265804
+      cerbero_total_28: 2014412132929505603
+      cerbero_total_29: 4399535707392796355
+      cerbero_total_3: 8775693719853253246
+      cerbero_total_30: 4694881925693978530
+      cerbero_total_31: 5625639581114701570
+      cerbero_total_32: 484321499065328975
+      cerbero_total_33: -3848546356351843781
+      cerbero_total_34: -8829664694276855909
+      cerbero_total_35: -2134117575342470845
+      cerbero_total_36: 6565646659336193370
+      cerbero_total_37: -8802566472885663187
+      cerbero_total_38: -8674159689095948237
+      cerbero_total_39: -5391117481042205621
+      cerbero_total_4: 7038839204259190733
+      cerbero_total_40: 5982899573819474596
+      cerbero_total_41: -725455922568325012
+      cerbero_total_42: 9091625024293236776
+      cerbero_total_43: -1338935969179624700
+      cerbero_total_44: -3032290454973720496
+      cerbero_total_45: -2655544826077376545
+      cerbero_total_46: -1415953973
+      cerbero_total_5: 6643889953089228663
+      cerbero_total_6: 327919663855853936
+      cerbero_total_7: -1207544579650844545
+      cerbero_total_8: 3762968264890069027
+      cerbero_total_9: 3255925505152359895
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
