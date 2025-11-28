@@ -1,6 +1,7 @@
-using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -13,8 +14,8 @@ public class PlayerController : MonoBehaviour
     [Header("Jump")]
     [SerializeField] private float jumpHeightBlocks = 2f;
 
-    [Header("Wall Cling")]
-    [SerializeField] private LayerMask wallLayer;
+    [Header("Layers")]
+    [SerializeField] private LayerMask SolidLayer;
     [SerializeField] private float wallCheckDistance = 0.6f;
 
     [Header("Stamina")]
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
     public static event Action OnClingFail;
 
     private Rigidbody2D rb;
+    private Collider2D playerCollider;
     private float defaultGravity;
     private bool isMovingHorizontal;
 
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 3f;
         rb.freezeRotation = true;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        playerCollider = GetComponent<Collider2D>();
         defaultGravity = rb.gravityScale;
         CurrentStamina = maxStamina;
     }
@@ -63,6 +66,19 @@ public class PlayerController : MonoBehaviour
         CheckSurroundings();
         ManageStaminaAndClingState();
         UpdateAnimations();
+    }
+
+    private void StartCling()
+    {
+        IsClinging = true;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
+    }
+
+    private void StopCling()
+    {
+        IsClinging = false;
+        rb.gravityScale = defaultGravity;
     }
 
     private void UpdateAnimations()
@@ -97,7 +113,10 @@ public class PlayerController : MonoBehaviour
     }
 
     private void MoveHorizontal(float dirX, int blocks){
-        if (isMovingHorizontal) return;
+        if (isMovingHorizontal)
+        {
+            return;
+        } 
 
         // Girar sprite
         if (dirX != 0)
@@ -107,28 +126,43 @@ public class PlayerController : MonoBehaviour
             
         float distance = gridSize * blocks;
 
-        // Si hay pared a 2 bloques, intentar mover 1
-        if (blocks > 1 && Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
+        // Calcular distancia para el movimiento
+        float targetDistance = gridSize * blocks;
+        Vector2 direction = Vector2.right * dirX;
+
+        // Lanzar Raycast para ver el entorno real
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, targetDistance, SolidLayer);
+
+        float finalMoveDistance = targetDistance;
+
+        // Si el rayo choca con algo
+        if (hit.collider != null)
         {
-            distance = gridSize;
-            if (Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
+            // Calculamos la distancia desde el centro del jugador hasta el punto de impacto
+            float distanceToWall = hit.distance - (playerCollider.bounds.extents.x + 0.02f);
+
+            // Si el espacio es muy pequeño (casi 0), no nos movemos para evitar colisiones
+            if (distanceToWall < 0.05f) 
             {
-                return;
+                return; 
             }
-        }
-        else if (Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
-        {
-            return;
+
+            // Si hay espacio, nuestra nueva meta es esa distancia
+            finalMoveDistance = distanceToWall;
         }
 
+        // Ejecutar Movimiento
         isMovingHorizontal = true;
-        if (IsClinging) StopCling();
+        if (IsClinging){
+            StopCling();
+        }
 
-        float targetX = transform.position.x + (dirX * distance);
+        float targetX = transform.position.x + (dirX * finalMoveDistance);
 
         rb.DOMoveX(targetX, moveDuration)
                 .SetEase(Ease.OutQuad)
                 .SetLink(gameObject)
+                .SetUpdate(UpdateType.Fixed)
                 .OnComplete(() =>
                 {
                     isMovingHorizontal = false;
@@ -171,8 +205,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        bool touchingWall = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer) ||
-                            Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+        bool touchingWall = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, SolidLayer) ||
+                            Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, SolidLayer);
 
         if (touchingWall && !IsGrounded && CurrentStamina > 0)
         {
@@ -185,25 +219,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void StartCling()
-    {
-        IsClinging = true;
-        rb.gravityScale = 0f;
-        rb.linearVelocity = Vector2.zero;
-    }
-
-    private void StopCling()
-    {
-        IsClinging = false;
-        rb.gravityScale = defaultGravity;
-    }
-
     private void ManageStaminaAndClingState()
     {
         if (IsClinging)
         {
-            bool touchingWall = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer) ||
-                                Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+            bool touchingWall = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, SolidLayer) ||
+                                Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, SolidLayer);
 
             if (!touchingWall) StopCling();
 
@@ -220,8 +241,7 @@ public class PlayerController : MonoBehaviour
     private void CheckSurroundings()
     {
         if (groundCheckPoint != null)
-            IsGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius,
-                1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Wall")); // Aseguramos capas
+            IsGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, SolidLayer);
 
         if (IsGrounded && IsClinging) StopCling();
     }

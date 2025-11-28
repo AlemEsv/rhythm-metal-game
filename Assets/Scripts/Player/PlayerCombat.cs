@@ -219,10 +219,14 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        if (!IsAlive) return;
         transform.DOKill();
         OnPlayerDeath?.Invoke();
-        if (animator != null) animator.SetTrigger("Die");
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+        this.enabled = false;
+
     }
 
     public void Heal(int amount)

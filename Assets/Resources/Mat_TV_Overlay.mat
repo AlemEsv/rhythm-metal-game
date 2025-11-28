@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _ScanlineCount: 800
-    - _ScanlineIntensity: 0.24854808
+    - _ScanlineIntensity: 0.25583518
     - _ScanlineSpeed: 1
     - _VignetteIntensity: 0.54
     - _VignetteSmoothness: 2.05
