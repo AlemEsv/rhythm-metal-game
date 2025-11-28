@@ -1,159 +1,86 @@
 using UnityEngine;
 using DG.Tweening;
 
-/// <summary>
-/// Proyectil que se mueve al ritmo de la música y puede ser reflejado con parry
-/// </summary>
 public class RhythmicProjectile : MonoBehaviour
 {
-    [Header("Movement")]
-    public float moveSpeed = 5f;
-    public Vector2 direction = Vector2.right;
-    
-    [Header("Rhythm Settings")]
-    public int beatsPerMove = 1; // Cuántos beats espera antes de moverse
-    public bool moveOnBeat = true; // Si se mueve solo en beats o continuo
-    
-    [Header("Combat")]
-    public int damage = 1;
-    public LayerMask playerLayer;
-    
-    [Header("Parry Settings")]
-    public bool canBeParried = true;
-    public float parryReflectSpeed = 8f;
-    public LayerMask enemyLayer;
-    
+    [Header("Settings")]
+    private int damage = 1;
     private bool isParried = false;
-    private int beatCounter = 0;
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
-
-    void Start()
+    private bool canBeParried = true;
+    public void Initialize(Vector3 targetPos, float durationSeconds, int dmg)
     {
-        rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        
-        if (rb == null)
+        this.damage = dmg;
+
+        transform.DOMove(targetPos, durationSeconds).SetEase(Ease.Linear).OnComplete(() =>
         {
-            rb = gameObject.AddComponent<Rigidbody2D>();
-            rb.gravityScale = 0;
-            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        }
+            // Si llega al destino sin chocar, se destruye (o explota)
+            if (!isParried) Destroy(gameObject);
+        });
 
-        // Suscribirse a los beats
-        if (Conductor.Instance != null && moveOnBeat)
+        // Rotar hacia el objetivo
+        RotateTowards(targetPos);
+    }
+
+    void RotateTowards(Vector3 target)
+    {
+        Vector3 dir = target - transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Golpeamos al Jugador (si no ha sido reflejado)
+        if (!isParried && other.CompareTag("Player"))
         {
-            Conductor.Instance.OnBeat.AddListener(OnBeatOccurred);
+            IDamageable player = other.GetComponent<IDamageable>();
+            if (player != null && player.IsAlive)
+            {
+                player.TakeDamage(damage);
+                Destroy(gameObject);
+            }
         }
-        else if (!moveOnBeat)
+        // Golpeamos a un Enemigo (si FUE reflejado con Parry)
+        else if (isParried && (other.gameObject.layer == LayerMask.NameToLayer("Enemy") || other.CompareTag("Enemy")))
         {
-            rb.linearVelocity = direction.normalized * moveSpeed;
+            IDamageable enemy = other.GetComponent<IDamageable>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage * 2); // Doble daño al devolverlo
+                Destroy(gameObject);
+            }
         }
-
-        UpdateRotation();
-    }
-
-    void OnBeatOccurred()
-    {
-        if (!moveOnBeat || isParried) return;
-
-        beatCounter++;
-        
-        if (beatCounter >= beatsPerMove)
+        // CASO 3: Chocamos con una pared
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || other.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            beatCounter = 0;
-            MoveStep();
+            // Efecto visual opcional
+            Destroy(gameObject);
         }
     }
+    public bool CanBeParried() => canBeParried && !isParried;
 
-    void MoveStep()
+    public void Parry(Vector3 playerPos)
     {
-        if (Conductor.Instance == null) return;
-        
-        Vector2 targetPos = (Vector2)transform.position + direction.normalized;
-        transform.DOMove(targetPos, Conductor.Instance.SecPerBeat * 0.8f).SetEase(Ease.OutQuad);
-        transform.DOPunchScale(Vector3.one * 0.1f, 0.1f, 1, 0);
-    }
+        if (isParried) return;
 
-    void UpdateRotation()
-    {
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-    }
-
-    public bool CanBeParried()
-    {
-        return canBeParried && !isParried;
-    }
-
-    public void Parry(Vector3 playerPosition)
-    {
-        if (!canBeParried || isParried) return;
+        // Detener el movimiento actual
+        transform.DOKill();
 
         isParried = true;
-        direction = -direction;
-        
-        if (moveOnBeat && Conductor.Instance != null)
-        {
-            Conductor.Instance.OnBeat.RemoveListener(OnBeatOccurred);
-            moveOnBeat = false;
-        }
-        
-        rb.linearVelocity = direction.normalized * parryReflectSpeed;
-        
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = Color.cyan;
-        }
-        
-        transform.DOPunchScale(Vector3.one * 0.3f, 0.2f, 5, 1f);
-        UpdateRotation();
-        
-        Debug.Log("🔄 Proyectil reflejado!");
-    }
+        canBeParried = false; // No se puede hacer parry dos veces
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!isParried && ((1 << collision.gameObject.layer) & playerLayer) != 0)
-        {
-            IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null && damageable.IsAlive)
-            {
-                damageable.TakeDamage(damage);
-                DestroyProjectile();
-            }
-        }
-        else if (isParried && ((1 << collision.gameObject.layer) & enemyLayer) != 0)
-        {
-            IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null && damageable.IsAlive)
-            {
-                damageable.TakeDamage(damage);
-                DestroyProjectile();
-            }
-        }
-        else if (collision.CompareTag("Wall"))
-        {
-            DestroyProjectile();
-        }
-    }
+        // 2. Cambiar visualmente (Feedback)
+        GetComponent<SpriteRenderer>().color = Color.cyan;
+        transform.localScale *= 1.2f;
 
-    void DestroyProjectile()
-    {
-        transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => Destroy(gameObject));
-    }
+        // Devolver el proyectil
+        Vector3 dirToPlayer = (transform.position - playerPos).normalized;
+        Vector3 newTarget = transform.position + (dirToPlayer * 15f); // Mandarlo lejos
 
-    void OnDestroy()
-    {
-        if (Conductor.Instance != null && moveOnBeat)
-        {
-            Conductor.Instance.OnBeat.RemoveListener(OnBeatOccurred);
-        }
-    }
+        // Se mueve muy rápido al ser devuelto
+        transform.DOMove(newTarget, 0.5f).SetEase(Ease.OutCubic).OnComplete(() => Destroy(gameObject));
+        RotateTowards(newTarget);
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = isParried ? Color.cyan : Color.red;
-        Gizmos.DrawRay(transform.position, direction.normalized * 0.5f);
+        Debug.Log("Proyectil Reflejado");
     }
 }

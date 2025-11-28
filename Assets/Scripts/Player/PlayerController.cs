@@ -3,9 +3,9 @@ using DG.Tweening;
 using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerHybridController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    [Header("Configuración de Grid")]
+    [Header("Grid")]
     [SerializeField] private float gridSize = 1f;
     [SerializeField] private float moveDuration = 0.15f;
     [SerializeField] private int standardStride = 2;

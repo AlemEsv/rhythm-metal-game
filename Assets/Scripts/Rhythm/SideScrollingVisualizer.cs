@@ -44,8 +44,8 @@ public class SideScrollingVisualizer : MonoBehaviour
         PlayerCombat.OnParryFail += HandleMiss;
 
         // AGARRE
-        PlayerHybridController.OnClingSuccess += HandleHit;
-        PlayerHybridController.OnClingFail += HandleMiss;
+        PlayerController.OnClingSuccess += HandleHit;
+        PlayerController.OnClingFail += HandleMiss;
     }
 
     void OnDisable()
@@ -56,8 +56,8 @@ public class SideScrollingVisualizer : MonoBehaviour
         PlayerCombat.OnParrySuccess -= HandleHit;
         PlayerCombat.OnParryFail -= HandleMiss;
 
-        PlayerHybridController.OnClingSuccess -= HandleHit;
-        PlayerHybridController.OnClingFail -= HandleMiss;
+        PlayerController.OnClingSuccess -= HandleHit;
+        PlayerController.OnClingFail -= HandleMiss;
     }
 
     void Update()

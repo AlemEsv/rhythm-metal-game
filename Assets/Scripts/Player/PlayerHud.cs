@@ -4,12 +4,34 @@ using UnityEngine.UI;
 public class PlayerHUD : MonoBehaviour
 {
     [Header("Jugador")]
-    public PlayerHybridController playerMovement;
+    public PlayerController playerMovement;
     public PlayerCombat playerCombat;
 
-    [Header("UI")]
+    [Header("Barras de estado")]
     public Image staminaFill;
     public Image parryFill;
+
+    [Header("Corazones")]
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+    void OnEnable()
+    {
+        PlayerCombat.OnHealthChanged += UpdateHealth;
+    }
+
+    void OnDisable()
+    {
+        PlayerCombat.OnHealthChanged -= UpdateHealth;
+    }
+
+    void Start()
+    {
+        if (playerCombat != null)
+        {
+            UpdateHealth(playerCombat.currentHealth);
+        }
+    }
 
     void Update()
     {
@@ -37,5 +59,33 @@ public class PlayerHUD : MonoBehaviour
     {
         if (playerCombat == null || parryFill == null) return;
         parryFill.fillAmount = playerCombat.GetParryBarFillAmount();
+    }
+
+    public void UpdateHealth(int currentHealth)
+    {
+        if (hearts == null) return;
+
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < currentHealth)
+            {
+                // Corazón Lleno
+                hearts[i].sprite = fullHeart;
+                hearts[i].enabled = true;
+            }
+            else
+            {
+                // Corazón Vacío
+                if (emptyHeart != null)
+                {
+                    hearts[i].sprite = emptyHeart;
+                    hearts[i].enabled = true;
+                }
+                else
+                {
+                    hearts[i].enabled = false;
+                }
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ public class MapHazard : MonoBehaviour
             if (player != null)
             {
                 if (isInstantDeath)
-                    player.Die(); // Asumiendo que añades Die() a la interfaz
+                    player.Die();
                 else
                     player.TakeDamage(damage);
             }

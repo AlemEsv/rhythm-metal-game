@@ -4,10 +4,10 @@ using UnityEngine.EventSystems;
 
 public class TextZoom : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Configuración")]
+    [Header("Configuracion")]
     [SerializeField] private RectTransform textoParaAnimar;
 
-    [Header("Animación")]
+    [Header("Animacion")]
     [SerializeField] private float escalaInicial = 1.0f;
     [SerializeField] private float escalaFinal = 1.4f;
     [SerializeField] private float duracion = 0.3f;
