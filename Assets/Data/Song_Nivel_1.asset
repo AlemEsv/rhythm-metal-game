@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   songName: Nivel-1
   audioClip: {fileID: 8300000, guid: f3da4ded2f624f44296f6977f395fc6a, type: 3}
-  bpm: 83
+  bpm: 110
   firstBeatOffset: 0

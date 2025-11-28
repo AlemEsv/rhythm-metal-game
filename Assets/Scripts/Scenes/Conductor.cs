@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class Conductor : MonoBehaviour
 {
     public static Conductor Instance;
 
-    [Header("Configuración Principal")]
+    [Header("Configuracion")]
     public SongData currentSongData; // Archivo de datos
     public AudioSource musicSource;  // El componente de audio
 
-    [Header("Ajustes de Reproducción")]
+    [Header("Ajustes de sonido")]
     public bool loopSong = true;
     public float inputOffset = 0f;   // Calibración de latencia
 
@@ -45,23 +46,41 @@ public class Conductor : MonoBehaviour
             SecPerBeat = 60f / bpm;
             musicSource.playOnAwake = false;
         }
-        else
-        {
-            Debug.LogError("No hay archivos de música.");
-        }
     }
 
     void Start()
+    {
+        if (musicSource.clip != null && !musicSource.isPlaying)
+        {
+            PlaySong();
+        }
+    }
+
+    public void PlaySong()
     {
         if (musicSource.clip == null) return;
 
         songDuration = musicSource.clip.length;
         musicSource.loop = loopSong;
-
-        // Iniciar conteo de tiempo
         lastReportedBeat = -1;
         dspSongTime = (float)AudioSettings.dspTime;
+        musicSource.volume = 1f; // Asegurar volumen máximo
         musicSource.Play();
+    }
+
+    public void PlaySongWithFade(float fadeDuration)
+    {
+        if (musicSource.clip == null) return;
+
+        songDuration = musicSource.clip.length;
+        musicSource.loop = loopSong;
+        lastReportedBeat = -1;
+        dspSongTime = (float)AudioSettings.dspTime;
+
+        musicSource.volume = 0f; // Empezar en silencio
+        musicSource.Play();
+
+        musicSource.DOFade(1f, fadeDuration).SetEase(Ease.Linear);
     }
 
     void Update()
