@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class BackgroundBeatPulse : MonoBehaviour
 {
-    [Header("Ritmo")]
-    [SerializeField] private int beatsToWait = 4; // Cada cuántos beats ocurre el pulso
+    [Header("Rhythm")]
+    [SerializeField] private int beatsToWait = 4; // Cada cuï¿½ntos beats ocurre el pulso
 
     [Header("Color")]
     [SerializeField] private Color pulseColor = Color.red;

@@ -10,10 +10,10 @@ public class SideScrollingVisualizer : MonoBehaviour
     public GameObject noteLine; 
     public Image Image;
 
-    [Header("Ritmo")]
+    [Header("Rhythm")]
     public float beatsInAdvance = 4f;
 
-    [Header("Colores")]
+    [Header("Colors")]
     public Color defaultColor = Color.white;
     public Color perfectColor = Color.green;
     public Color goodColor = Color.yellow;

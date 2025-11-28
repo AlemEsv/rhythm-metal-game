@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveDuration = 0.15f;
     [SerializeField] private int standardStride = 1;
 
-    [Header("Salto")]
+    [Header("Jump")]
     [SerializeField] private float jumpHeightBlocks = 2f;
 
     [Header("Wall Cling")]

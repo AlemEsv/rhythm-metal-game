@@ -10,7 +10,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     public int damage = 1;
 
     [Header("Rhythm Settings")]
-    public int actionInterval = 1; // Actúa cada X beats
+    public int actionInterval = 1; // Actua cada X beats
     protected int beatCounter = 0;
 
     protected Transform playerTransform;
@@ -38,7 +38,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
 
     }
 
-    // Lógica interna para manejar intervalos (ej. el volador ataca cada 4 beats)
+    // Logica interna para manejar intervalos
     private void OnBeatHandler()
     {
         if (!IsAlive) return;
@@ -56,8 +56,8 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     public virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        // animación de Hit o Flash rojo
-        Debug.Log($"{gameObject.name} recibió daño. Vida: {currentHealth}");
+        // animacion de Hit o Flash rojo
+        Debug.Log($"{gameObject.name} Vida: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -67,7 +67,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
 
     public virtual void Die()
     {
-        // notificar al RoomManager que murió un enemigo
+        // notificar al RoomManager
         Destroy(gameObject);
     }
 }

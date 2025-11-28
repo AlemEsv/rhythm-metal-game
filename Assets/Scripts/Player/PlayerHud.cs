@@ -3,15 +3,15 @@ using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
-    [Header("Jugador")]
+    [Header("Player")]
     public PlayerController playerMovement;
     public PlayerCombat playerCombat;
 
-    [Header("Barras de estado")]
+    [Header("State Bars")]
     public Image staminaFill;
     public Image parryFill;
 
-    [Header("Corazones")]
+    [Header("Hearts")]
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
@@ -69,13 +69,13 @@ public class PlayerHUD : MonoBehaviour
         {
             if (i < currentHealth)
             {
-                // Corazón Lleno
+                // Corazon Lleno
                 hearts[i].sprite = fullHeart;
                 hearts[i].enabled = true;
             }
             else
             {
-                // Corazón Vacío
+                // Corazon Vacio
                 if (emptyHeart != null)
                 {
                     hearts[i].sprite = emptyHeart;

@@ -6,11 +6,11 @@ public class Conductor : MonoBehaviour
 {
     public static Conductor Instance;
 
-    [Header("Configuracion")]
+    [Header("Settings")]
     public SongData currentSongData; // Archivo de datos
     public AudioSource musicSource;  // El componente de audio
 
-    [Header("Ajustes de sonido")]
+    [Header("Audio")]
     public bool loopSong = true;
     public float inputOffset = 0f;   // Calibración de latencia
 

@@ -3,7 +3,7 @@ using System;
 
 public enum RhythmActionType
 {
-    Move,       // A / D (2 Bloques)
+    Move,       // A / D
     Jump,       // W
     WallCling,  // SPACE
     AttackLeft, // Q
@@ -13,7 +13,7 @@ public enum RhythmActionType
 
 public class RhythmInput : MonoBehaviour
 {
-    [Header("Tolerancia")]
+    [Header("Tolerance")]
     public float toleranceSeconds = 0.25f;
     public float bufferTimeBeforeBeat = 0.15f;
     [Range(0f, 1f)] public float minAccuracyThreshold = 0.3f;

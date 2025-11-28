@@ -4,11 +4,11 @@ using DG.Tweening;
 
 public class SceneEntryAnimation : MonoBehaviour
 {
-    [Header("Referencias UI")]
+    [Header("References")]
     public Image transitionOverlay;
     public Canvas transitionCanvas;
 
-    [Header("Configuración")]
+    [Header("Settings")]
     public float animationDuration = 2.5f;
     public float startDelay = 0.2f;
     [Range(0.5f, 2f)] public float maxRadius = 1.2f;
@@ -23,17 +23,17 @@ public class SceneEntryAnimation : MonoBehaviour
             transitionMaterial = new Material(transitionOverlay.material);
             transitionOverlay.material = transitionMaterial;
 
-            // Empezamos con el círculo cerrado (Radio 0)
+            // Empezamos con el circulo cerrado (Radio 0)
             transitionMaterial.SetFloat("_Radius", 0f);
 
-            // Ajustamos el Aspect Ratio para que el círculo sea perfecto
+            // Ajustamos el Aspect Ratio para que el circulo sea perfecto
             float ratio = (float)Screen.width / Screen.height;
             transitionMaterial.SetFloat("_AspectRatio", ratio);
 
             transitionOverlay.gameObject.SetActive(true);
         }
 
-        // Iniciar Música con Fade
+        // Iniciar Musica con Fade
         if (Conductor.Instance != null)
         {
             Conductor.Instance.PlaySongWithFade(animationDuration);

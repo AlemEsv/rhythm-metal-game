@@ -3,10 +3,10 @@ using DG.Tweening;
 
 public class ClockTicker : MonoBehaviour
 {
-    [Header("Referencia")]
+    [Header("Reference")]
     public RectTransform clockHand;
 
-    [Header("Configuración")]
+    [Header("Settings")]
     public float rotationAngle = -90f;
     public float tickDuration = 0.2f;
     public Ease tickEase = Ease.OutElastic;

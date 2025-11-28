@@ -7,7 +7,7 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance;
 
-    [Header("Configuración Visual")]
+    [Header("Visual Settings")]
     public CanvasGroup fadeCanvasGroup;
     public float fadeDuration = 0.5f;   // fade entre escenas
 

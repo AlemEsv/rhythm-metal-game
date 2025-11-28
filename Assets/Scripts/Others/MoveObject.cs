@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class MoveObject : MonoBehaviour
 {
-    [Header("Configuración")]
+    [Header("Settings")]
     public float distancia = 500f;
     public float duracion = 1f;
     public float retardo = 0f;
@@ -14,10 +14,10 @@ public class MoveObject : MonoBehaviour
 
     void Start()
     {
-        // Calcular posición final
+        // Calcular posicion final
         Vector3 destino = transform.localPosition + new Vector3(distancia, 0, 0);
 
-        // Configurar animación
+        // Configurar animacion
         Tweener tween = transform.DOLocalMove(destino, duracion)
             .SetEase(Effect)
             .SetDelay(retardo);

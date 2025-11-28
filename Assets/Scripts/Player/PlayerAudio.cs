@@ -6,7 +6,7 @@ public class PlayerAudio : MonoBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
 
-    [Header("Clips")]
+    [Header("Clip")]
     public AudioClip runClip;
     public AudioClip attackClip;
     public AudioClip jumpClip;

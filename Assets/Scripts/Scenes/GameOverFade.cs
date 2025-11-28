@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class GameOverFade : MonoBehaviour
 {
-    [Header("Configuracion")]
+    [Header("Settings")]
     public Image blackOverlay;
     public float fadeDuration = 2.0f;
     public float delayBeforeFade = 0.5f;

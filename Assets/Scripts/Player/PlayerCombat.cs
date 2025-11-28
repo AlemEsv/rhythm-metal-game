@@ -18,7 +18,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     public float parryRadius = 1.5f;
     public LayerMask projectileLayer;
 
-    [Header("Ataque")]
+    [Header("Attack layer")]
     public LayerMask enemyLayer;
     public float attackRange = 0.8f;
 
