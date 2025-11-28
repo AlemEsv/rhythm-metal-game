@@ -63,13 +63,12 @@ public class RhythmicProjectile : MonoBehaviour
     {
         if (isParried) return;
 
-        // Detener el movimiento actual
         transform.DOKill();
 
         isParried = true;
         canBeParried = false; // No se puede hacer parry dos veces
 
-        // 2. Cambiar visualmente (Feedback)
+        // Cambiar visualmente
         GetComponent<SpriteRenderer>().color = Color.cyan;
         transform.localScale *= 1.2f;
 

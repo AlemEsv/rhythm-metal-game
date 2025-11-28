@@ -51,8 +51,12 @@ public class PlayerController : MonoBehaviour
         CurrentStamina = maxStamina;
     }
 
-    void OnEnable() { RhythmInput.OnCommandInput += HandleRhythmCommand; }
-    void OnDisable() { RhythmInput.OnCommandInput -= HandleRhythmCommand; }
+    void OnEnable() { 
+        RhythmInput.OnCommandInput += HandleRhythmCommand; 
+    }
+    void OnDisable() { 
+        RhythmInput.OnCommandInput -= HandleRhythmCommand; 
+    }
 
     void Update()
     {
@@ -92,13 +96,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void MoveHorizontal(float dirX, int blocks)
-    {
+    private void MoveHorizontal(float dirX, int blocks){
         if (isMovingHorizontal) return;
 
-        // Girar sprite hacia la dirección del movimiento
-        if (dirX != 0) transform.localScale = new Vector3(Mathf.Sign(dirX), 1, 1);
-
+        // Girar sprite
+        if (dirX != 0)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(dirX), 1, 1);
+        }
+            
         float distance = gridSize * blocks;
 
         // Si hay pared a 2 bloques, intentar mover 1
@@ -107,12 +113,12 @@ public class PlayerController : MonoBehaviour
             distance = gridSize;
             if (Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
             {
-                return; // Bloqueado
+                return;
             }
         }
         else if (Physics2D.Raycast(transform.position, Vector2.right * dirX, distance, wallLayer))
         {
-            return; // Bloqueado
+            return;
         }
 
         isMovingHorizontal = true;
@@ -120,10 +126,13 @@ public class PlayerController : MonoBehaviour
 
         float targetX = transform.position.x + (dirX * distance);
 
-        rb.DOMoveX(targetX, moveDuration).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            isMovingHorizontal = false;
-        });
+        rb.DOMoveX(targetX, moveDuration)
+                .SetEase(Ease.OutQuad)
+                .SetLink(gameObject)
+                .OnComplete(() =>
+                {
+                    isMovingHorizontal = false;
+                });
     }
 
     private void TryRhythmicJump()
@@ -136,7 +145,10 @@ public class PlayerController : MonoBehaviour
 
     private void PerformJump()
     {
-        if (IsClinging) StopCling();
+        if (IsClinging)
+        {
+            StopCling();
+        }
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
         float targetHeight = jumpHeightBlocks * gridSize;
@@ -212,5 +224,10 @@ public class PlayerController : MonoBehaviour
                 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Wall")); // Aseguramos capas
 
         if (IsGrounded && IsClinging) StopCling();
+    }
+
+    void OnDestroy()
+    {
+        transform.DOKill();
     }
 }
