@@ -14,7 +14,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     [Header("Parry System")]
     public int maxParryCharges = 4;
-    public float chargeRegenTime = 20f;
+    public float chargeRegenTime = 10f;
     public float parryRadius = 1.5f;
     public LayerMask projectileLayer;
 
@@ -217,8 +217,28 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         }
     }
 
-    public void Die()
+    public virtual void Die()
     {
+        PlayerController controller = GetComponent<PlayerController>();
+        if (controller != null)
+        {
+            controller.enabled = false;
+            transform.DOKill();
+        }
+
+        if (Conductor.Instance != null)
+        {
+            Conductor.Instance.GetComponent<AudioSource>().Pause();
+        }
+
+        if (Conductor.Instance != null)
+        {
+            Conductor.Instance.StopMusicWithFade(5f);
+        }
+
+        PlayerAudio audio = GetComponent<PlayerAudio>();
+        if (audio != null) audio.PlayDie();
+
         transform.DOKill();
         OnPlayerDeath?.Invoke();
         if (animator != null)
@@ -237,11 +257,4 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         OnHealthChanged?.Invoke(currentHealth);
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, parryRadius);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + Vector3.right * 0.5f, attackRange);
-    }
 }

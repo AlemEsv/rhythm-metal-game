@@ -1169,7 +1169,7 @@ TextureImporter:
         x: 4
         y: 133
         width: 20
-        height: 20
+        height: 22
       alignment: 9
       pivot: {x: 0.75, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1190,10 +1190,10 @@ TextureImporter:
         serializedVersion: 2
         x: 35
         y: 133
-        width: 23
-        height: 16
+        width: 22
+        height: 22
       alignment: 9
-      pivot: {x: 0.7, y: 0.3}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1207,37 +1207,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerSprite_39
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 138
-        width: 13
-        height: 10
-      alignment: 9
-      pivot: {x: 0.5257181, y: 0.48328552}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 08a3bfa80317d4970800000000000000
-      internalID: 8740766905100089984
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: PlayerSprite_40
       rect:
         serializedVersion: 2
-        x: 76
+        x: 66
         y: 133
-        width: 14
-        height: 18
+        width: 24
+        height: 22
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.75, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1259,7 +1237,7 @@ TextureImporter:
         width: 24
         height: 22
       alignment: 9
-      pivot: {x: 0.6929738, y: 0.2073288}
+      pivot: {x: 0.75, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1281,7 +1259,7 @@ TextureImporter:
         width: 23
         height: 22
       alignment: 9
-      pivot: {x: 0.6669849, y: 0.19192505}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1303,7 +1281,7 @@ TextureImporter:
         width: 24
         height: 22
       alignment: 9
-      pivot: {x: 0.66002655, y: 0.19705963}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1325,7 +1303,7 @@ TextureImporter:
         width: 25
         height: 22
       alignment: 9
-      pivot: {x: 0.62199706, y: 0.19192505}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1347,7 +1325,7 @@ TextureImporter:
         width: 25
         height: 22
       alignment: 9
-      pivot: {x: 0.65814453, y: 0.21246338}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1364,12 +1342,12 @@ TextureImporter:
       name: PlayerSprite_52
       rect:
         serializedVersion: 2
-        x: 291
+        x: 290
         y: 133
         width: 26
         height: 22
       alignment: 9
-      pivot: {x: 0.682474, y: 0.22273254}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1391,7 +1369,7 @@ TextureImporter:
         width: 26
         height: 22
       alignment: 9
-      pivot: {x: 0.63033825, y: 0.19192505}
+      pivot: {x: 0.74, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

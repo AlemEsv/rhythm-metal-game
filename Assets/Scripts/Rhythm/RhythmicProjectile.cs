@@ -11,7 +11,10 @@ public class RhythmicProjectile : MonoBehaviour
     {
         this.damage = dmg;
 
-        transform.DOMove(targetPos, durationSeconds).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMove(targetPos, durationSeconds)
+            .SetEase(Ease.Linear)
+            .SetLink(gameObject)
+            .OnComplete(() =>
         {
             // Si llega al destino sin chocar, se destruye (o explota)
             if (!isParried) Destroy(gameObject);
@@ -37,7 +40,7 @@ public class RhythmicProjectile : MonoBehaviour
             if (player != null && player.IsAlive)
             {
                 player.TakeDamage(damage);
-                Destroy(gameObject);
+                DestroyProjectile();
             }
         }
         // Golpeamos a un Enemigo (si FUE reflejado con Parry)
@@ -47,14 +50,14 @@ public class RhythmicProjectile : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage * 2); // Doble daño al devolverlo
-                Destroy(gameObject);
+                DestroyProjectile();
             }
         }
         // CASO 3: Chocamos con una pared
-        else if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
             // Efecto visual opcional
-            Destroy(gameObject);
+            DestroyProjectile();
         }
     }
     public bool CanBeParried() => canBeParried && !isParried;
@@ -77,9 +80,19 @@ public class RhythmicProjectile : MonoBehaviour
         Vector3 newTarget = transform.position + (dirToPlayer * 15f); // Mandarlo lejos
 
         // Se mueve muy rápido al ser devuelto
-        transform.DOMove(newTarget, 0.5f).SetEase(Ease.OutCubic).OnComplete(() => Destroy(gameObject));
+        transform.DOMove(newTarget, 0.5f)
+            .SetEase(Ease.OutCubic)
+            .SetLink(gameObject)
+            .OnComplete(() => Destroy(gameObject));
         RotateTowards(newTarget);
-
-        Debug.Log("Proyectil Reflejado");
+    }
+    private void DestroyProjectile()
+    {
+        transform.DOKill();
+        Destroy(gameObject);
+    }
+    void OnDestroy()
+    {
+        transform.DOKill();
     }
 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class MapHazard : MonoBehaviour
+public class HazardDamage : MonoBehaviour
 {
     public int damage = 1;
-    public bool isInstantDeath = false;
+    public bool instantKill = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -12,10 +12,8 @@ public class MapHazard : MonoBehaviour
             IDamageable player = other.GetComponent<IDamageable>();
             if (player != null)
             {
-                if (isInstantDeath)
-                    player.Die();
-                else
-                    player.TakeDamage(damage);
+                if (instantKill) player.Die();
+                else player.TakeDamage(damage);
             }
         }
     }

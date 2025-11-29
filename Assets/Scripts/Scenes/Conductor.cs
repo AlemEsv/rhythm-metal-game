@@ -125,4 +125,17 @@ public class Conductor : MonoBehaviour
         PlayerPrefs.SetFloat("InputOffset", inputOffset);
         PlayerPrefs.Save();
     }
+
+    public void StopMusicWithFade(float duration)
+    {
+        if (musicSource == null) return;
+
+        musicSource.DOFade(0f, duration)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                musicSource.Stop(); 
+                musicSource.volume = 1f;
+            });
+    }
 }

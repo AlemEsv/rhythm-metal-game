@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -27,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Visuals")]
     public Animator animator;
+    public PlayerAudio playerAudio;
 
     // Estado
     public float CurrentStamina { get; private set; }
@@ -135,13 +135,12 @@ public class PlayerController : MonoBehaviour
 
         float finalMoveDistance = targetDistance;
 
-        // Si el rayo choca con algo
         if (hit.collider != null)
         {
             // Calculamos la distancia desde el centro del jugador hasta el punto de impacto
             float distanceToWall = hit.distance - (playerCollider.bounds.extents.x + 0.02f);
 
-            // Si el espacio es muy pequeño (casi 0), no nos movemos para evitar colisiones
+            // Si el espacio es muy pequeño (casi 0), no nos movemos para evitar colisiones erroneas
             if (distanceToWall < 0.05f) 
             {
                 return; 
@@ -155,6 +154,11 @@ public class PlayerController : MonoBehaviour
         isMovingHorizontal = true;
         if (IsClinging){
             StopCling();
+        }
+
+        if (playerAudio != null)
+        {
+            playerAudio.PlayRun();
         }
 
         float targetX = transform.position.x + (dirX * finalMoveDistance);
