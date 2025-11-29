@@ -44,7 +44,7 @@ public class RhythmicProjectile : MonoBehaviour
             }
         }
         // Golpeamos a un Enemigo (si FUE reflejado con Parry)
-        else if (isParried && (other.gameObject.layer == LayerMask.NameToLayer("Enemy") || other.CompareTag("Enemy")))
+        else if (isParried && (other.gameObject.layer == LayerMask.NameToLayer("Enemy")))
         {
             IDamageable enemy = other.GetComponent<IDamageable>();
             if (enemy != null)

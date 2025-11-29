@@ -38,31 +38,30 @@ public class PatrolEnemy : EnemyBase
     }
     private void MoveStepTowardsTarget()
     {
-        // Identificar el objetivo actual
         Vector3 targetPos = waypoints[targetIndex].position;
 
         // Calcular distancia
         float distanceToTarget = Vector3.Distance(transform.position, targetPos);
 
-        // Si estamos ya en el punto (o muy cerca), cambiamos al siguiente waypoint
-        if (distanceToTarget < 0.1f)
+        if (distanceToTarget <= gridSize + 0.05f)
         {
-            targetIndex = (targetIndex + 1) % waypoints.Length; // Siguiente punto
-            targetPos = waypoints[targetIndex].position;
+            transform.DOMove(targetPos, moveDuration).SetEase(Ease.OutQuad);
+            targetIndex = (targetIndex + 1) % waypoints.Length;
+            return;
         }
 
-        // Calcular la dirección hacia el objetivo
+        // Si estamos lejos, calculamos dirección normal
         Vector3 direction = (targetPos - transform.position).normalized;
 
+        // Grid Snap
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
             direction = new Vector3(Mathf.Sign(direction.x), 0, 0);
         else
             direction = new Vector3(0, Mathf.Sign(direction.y), 0);
 
-        // Calcular la posición del siguiente step
         Vector3 nextStepPosition = transform.position + (direction * gridSize);
 
-        // Girar sprite si nos movemos horizontalmente
+        // Girar sprite
         if (direction.x != 0)
             transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
 
