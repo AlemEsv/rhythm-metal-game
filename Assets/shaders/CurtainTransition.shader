@@ -77,7 +77,6 @@ Shader "Custom/CurtainTransition"
                 // Creamos la máscara. 
                 // Si la distancia al centro es MENOR que el hueco actual -> Transparente (0)
                 // Si es MAYOR -> Opaco (1)
-                // Usamos smoothstep para que el borde no sea pixelado
                 float mask = smoothstep(currentGap, currentGap + _Smoothness, distFromCenter);
 
                 return fixed4(IN.color.rgb, mask * IN.color.a);

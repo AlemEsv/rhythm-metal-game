@@ -689,8 +689,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d1f8fd0ea586144ae4c35aebe1da6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSounds
-  sonidoHover: {fileID: 8300000, guid: eaa5b694cb35c5d44989d0bbeb45db2d, type: 3}
-  sonidoClick: {fileID: 8300000, guid: eaa5b694cb35c5d44989d0bbeb45db2d, type: 3}
+  sonidoHover: {fileID: 8300000, guid: 7edbb71c3e783c043a5150612719071c, type: 3}
+  sonidoClick: {fileID: 8300000, guid: 7edbb71c3e783c043a5150612719071c, type: 3}
 --- !u!82 &530812083
 AudioSource:
   m_ObjectHideFlags: 0
@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 2100000, guid: 01b325d154e570841b2e4b7ab8b77895, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -846,10 +846,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 2
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -1104,8 +1104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d1f8fd0ea586144ae4c35aebe1da6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSounds
-  sonidoHover: {fileID: 8300000, guid: 21374fbeeb0de5242af1e1c029672840, type: 3}
-  sonidoClick: {fileID: 8300000, guid: 34e85dbfcaf3fb942b672cc3233e0bae, type: 3}
+  sonidoHover: {fileID: 8300000, guid: 2e35db7959f6be54e98cc4f280e65b8f, type: 3}
+  sonidoClick: {fileID: 8300000, guid: a11d86f8182ffb449a7fd5d5fa3edf69, type: 3}
 --- !u!82 &886856915
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1644,7 +1644,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 24fa783b70a1a9d42a4bb0187b58ebe2, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2090,7 +2090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d1f8fd0ea586144ae4c35aebe1da6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSounds
-  sonidoHover: {fileID: 8300000, guid: 21374fbeeb0de5242af1e1c029672840, type: 3}
+  sonidoHover: {fileID: 8300000, guid: 2e35db7959f6be54e98cc4f280e65b8f, type: 3}
   sonidoClick: {fileID: 8300000, guid: f558d1c0b467cb3468b941aa35c1f57f, type: 3}
 --- !u!82 &2101218766
 AudioSource:

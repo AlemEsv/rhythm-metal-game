@@ -1606,10 +1606,10 @@ TextureImporter:
       name: PlayerSprite_64
       rect:
         serializedVersion: 2
-        x: 4
-        y: 37
-        width: 20
-        height: 20
+        x: 11
+        y: 43
+        width: 13
+        height: 12
       alignment: 9
       pivot: {x: 0.65, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
