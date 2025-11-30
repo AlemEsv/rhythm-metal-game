@@ -138,4 +138,33 @@ public class Conductor : MonoBehaviour
                 musicSource.volume = 1f;
             });
     }
+
+    public void SwitchMusic(AudioClip newClip, float newBpm, float fadeDuration = 1.0f)
+    {
+        if (musicSource == null) return;
+
+        // Si ya está sonando esa canción, no se hace nada
+        if (musicSource.clip == newClip) return;
+
+        // 1. Bajar volumen actual a 0
+        musicSource.DOFade(0f, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            // Cambiar el clip y el BPM
+            musicSource.clip = newClip;
+
+            // Actualizar el ritmo del juego
+            if (newBpm > 0)
+            {
+                bpm = newBpm;
+                SecPerBeat = 60f / bpm;
+                dspSongTime = (float)AudioSettings.dspTime;
+            }
+
+            // Reproducir y subir volumen
+            musicSource.Play();
+            musicSource.DOFade(1f, fadeDuration).SetEase(Ease.Linear);
+
+            Debug.Log($"Música cambiada a: {newClip.name} | BPM: {newBpm}");
+        });
+    }
 }

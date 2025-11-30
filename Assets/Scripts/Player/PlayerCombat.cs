@@ -144,14 +144,13 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
         if (parrySuccess)
         {
-            Debug.Log("PARRY EXITOSO");
             ConsumeParryCharge();
             OnParrySuccess?.Invoke();
             transform.DOPunchScale(Vector3.one * 0.2f, 0.2f, 5, 1f);
         }
         else
         {
-            Debug.Log("Parry al aire (Gasta carga)");
+            Debug.Log("Parry al aire");
             ConsumeParryCharge();
             OnParryFail?.Invoke();
         }
@@ -228,25 +227,23 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
         if (Conductor.Instance != null)
         {
-            Conductor.Instance.GetComponent<AudioSource>().Pause();
-        }
-
-        if (Conductor.Instance != null)
-        {
             Conductor.Instance.StopMusicWithFade(5f);
         }
 
         PlayerAudio audio = GetComponent<PlayerAudio>();
         if (audio != null) audio.PlayDie();
 
+        if (animator != null) animator.SetTrigger("Die");
+
+        GameOverFade fader = FindFirstObjectByType<GameOverFade>();
+        if (fader != null)
+        {
+            fader.FadeOut();
+        }
+
         transform.DOKill();
         OnPlayerDeath?.Invoke();
-        if (animator != null)
-        {
-            animator.SetTrigger("Die");
-        }
         this.enabled = false;
-
     }
 
     public void Heal(int amount)

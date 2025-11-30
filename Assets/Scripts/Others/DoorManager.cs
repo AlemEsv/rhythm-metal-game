@@ -13,6 +13,7 @@ public class DoorManager : MonoBehaviour
 
     // evento
     public event Action<int, int> OnProgressChanged;
+    public event Action OnDoorOpened;
 
     private AudioSource audioSource;
     private int count = 0;
@@ -34,16 +35,10 @@ public class DoorManager : MonoBehaviour
     }
     private void OpenDoor()
     {
-        if (successSound != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(successSound);
-        }
+        if (successSound != null && audioSource != null) audioSource.PlayOneShot(successSound);
+        if (door != null) door.SetActive(false);
 
-        // Abrir la puerta
-        if (door != null)
-        {
-            door.SetActive(false); // Ocultar puerta
-        }
+        OnDoorOpened?.Invoke();
     }
 
     private void UpdateProgressUI()

@@ -17,28 +17,14 @@ public class GameOverFade : MonoBehaviour
             blackOverlay.gameObject.SetActive(false);
         }
     }
-
-    void OnEnable()
-    {
-        PlayerCombat.OnPlayerDeath += TriggerFade;
-    }
-
-    void OnDisable()
-    {
-        PlayerCombat.OnPlayerDeath -= TriggerFade;
-    }
-
-    void TriggerFade()
+    public void FadeOut()
     {
         if (blackOverlay == null) return;
         blackOverlay.gameObject.SetActive(true);
 
         blackOverlay.DOFade(1f, fadeDuration)
-            .SetDelay(delayBeforeFade)
-            .SetEase(Ease.InOutQuad)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-            });
+                    .SetDelay(delayBeforeFade)
+                    .SetEase(Ease.InOutQuad)
+                    .SetUpdate(true);
     }
 }
