@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65f782d24bbc454f94050287cac1a33, type: 3}
   m_Name: nivel-1
   m_EditorClassIdentifier: Assembly-CSharp::SongData
-  songName: level-1
-  audioClip: {fileID: 8300000, guid: 31627fd989191784eaa7c4375c70c108, type: 3}
+  songName: fase1
+  audioClip: {fileID: 8300000, guid: 9be8af89fbf4c8141bbcbf38857bc36a, type: 3}
   bpm: 110
   firstBeatOffset: 0
