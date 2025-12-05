@@ -146,7 +146,7 @@ public class Conductor : MonoBehaviour
         // Si ya está sonando esa canción, no se hace nada
         if (musicSource.clip == newClip) return;
 
-        // 1. Bajar volumen actual a 0
+        // Bajar volumen actual a 0
         musicSource.DOFade(0f, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
         {
             // Cambiar el clip y el BPM
@@ -157,7 +157,12 @@ public class Conductor : MonoBehaviour
             {
                 bpm = newBpm;
                 SecPerBeat = 60f / bpm;
+
+                // Reiniciar tiempos
                 dspSongTime = (float)AudioSettings.dspTime;
+                SongPosition = 0; // Reiniciamos posición para evitar picos extraños
+
+                lastReportedBeat = -1; // Reiniciamos el contador de beats
             }
 
             // Reproducir y subir volumen
